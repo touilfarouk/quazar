@@ -1,0 +1,163 @@
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #f5f5f5;
+  color: #212121;
+}
+
+/* Layout Classes */
+.app {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Card Component */
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 420px;
+  padding: 24px;
+}
+
+.card-section {
+  margin-bottom: 20px;
+}
+
+.card-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Typography */
+.text-h6 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.text-caption {
+  font-size: 12px;
+  color: #757575;
+}
+
+.text-subtitle1 {
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 16px;
+}
+
+/* Form Elements */
+.input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: #1976d2;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: #1976d2;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1565c0;
+}
+
+.btn-negative {
+  background: transparent;
+  color: #d32f2f;
+  margin-left: 8px;
+}
+
+.btn-negative:hover {
+  background: rgba(211, 47, 47, 0.04);
+}
+
+.btn-secondary {
+  background: #9c27b0;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #7b1fa2;
+}
+
+/* Utility Classes */
+.separator {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 24px 0;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.mt-md {
+  margin-top: 16px;
+}
+
+.q-mb-md {
+  margin-bottom: 16px;
+}
+
+.q-ml-sm {
+  margin-left: 8px;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .card {
+    width: 100%;
+    margin: 0 16px;
+  }
+  
+  .app {
+    padding: 16px;
+  }
+}
