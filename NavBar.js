@@ -3,176 +3,124 @@ const NavBar = {
   template: `
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <q-toolbar-title class="text-weight-bold">
-          Mon App Quasar
-        </q-toolbar-title>
-
-        <!-- Desktop Navigation -->
-        <div class="gt-sm">
-          <q-tabs v-model="activeTab" active-color="white" indicator-color="yellow-8" dense inline-label>
-            <q-route-tab 
-              to="/" 
-              name="home"
-              label="Accueil" 
-              icon="home"
-              exact
-              class="q-mx-sm"
-            />
-            <q-route-tab 
-              to="/about" 
-              name="about"
-              label="À propos" 
-              icon="info"
-              class="q-mx-sm"
-            />
-          </q-tabs>
-        </div>
-
-        <!-- Mobile Menu Button -->
         <q-btn
           flat
           dense
           round
           icon="menu"
-          class="lt-md"
-          @click="mobileMenuOpen = !mobileMenuOpen"
           aria-label="Menu"
+          @click="toggleMobileMenu"
+          class="q-mr-sm"
         />
+        <q-toolbar-title>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+          </q-avatar>
+          Mon App Quasar
+        </q-toolbar-title>
+
+        <div class="gt-sm">
+          <q-tabs v-model="currentTab" inline-label>
+            <q-route-tab
+              name="home"
+              icon="home"
+              label="Accueil"
+              to="/"
+              exact
+            />
+            <q-route-tab
+              name="about"
+              icon="info"
+              label="À propos"
+              to="/about"
+            />
+          </q-tabs>
+        </div>
+
+        <q-space />
+
+        <div class="q-gutter-sm row items-center no-wrap">
+          <q-btn round dense flat color="white" icon="fab fa-github" />
+          <q-btn round dense flat color="white" icon="fab fa-twitter" />
+          <q-btn round dense flat color="white" icon="fab fa-linkedin" />
+        </div>
       </q-toolbar>
 
-      <!-- Mobile Navigation -->
+      <!-- Mobile Menu -->
       <q-drawer
         v-model="mobileMenuOpen"
-        side="right"
-        overlay
-        bordered
-        class="bg-primary text-white"
         :width="200"
+        :breakpoint="600"
+        bordered
+        overlay
+        side="left"
+        @hide="closeMobileMenu"
       >
-        <q-list>
-          <q-item 
-            v-ripple
-            clickable
-            to="/"
-            exact
-            active-class="text-yellow-8"
-            @click="mobileMenuOpen = false"
-            class="q-pa-md"
-          >
-            <q-item-section avatar>
-              <q-icon name="home" />
-            </q-item-section>
-            <q-item-section>Accueil</q-item-section>
-          </q-item>
-          
-          <q-separator color="white-20" />
-          
-          <q-item 
-            v-ripple
-            clickable
-            to="/about"
-            active-class="text-yellow-8"
-            @click="mobileMenuOpen = false"
-            class="q-pa-md"
-          >
-            <q-item-section avatar>
-              <q-icon name="info" />
-            </q-item-section>
-            <q-item-section>À propos</q-item-section>
-          </q-item>
-        </q-list>
+        <q-scroll-area class="fit">
+          <q-list padding>
+            <q-item
+              v-ripple
+              clickable
+              to="/"
+              exact
+              @click="closeMobileMenu"
+            >
+              <q-item-section avatar>
+                <q-icon name="home" />
+              </q-item-section>
+              <q-item-section>Accueil</q-item-section>
+            </q-item>
+
+            <q-item
+              v-ripple
+              clickable
+              to="/about"
+              @click="closeMobileMenu"
+            >
+              <q-item-section avatar>
+                <q-icon name="info" />
+              </q-item-section>
+              <q-item-section>À propos</q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
       </q-drawer>
     </q-header>
   `,
   data() {
     return {
-      activeTab: 'home',
+      currentTab: 'home',
       mobileMenuOpen: false,
       windowWidth: window.innerWidth
     };
   },
   watch: {
     '$route'(to) {
-      this.activeTab = to.name || 'home';
+      this.currentTab = to.name || 'home';
+      this.closeMobileMenu();
     }
   },
   created() {
-    this.activeTab = this.$route.name || 'home';
+    this.currentTab = this.$route?.name || 'home';
     window.addEventListener('resize', this.handleResize);
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    toggleMobileMenu() {
+      this.mobileMenuOpen = !this.mobileMenuOpen;
+    },
+    closeMobileMenu() {
+      this.mobileMenuOpen = false;
+    },
     handleResize() {
       this.windowWidth = window.innerWidth;
       if (this.windowWidth > 599) {
-        this.mobileMenuOpen = false;
+        this.closeMobileMenu();
       }
     }
   }
 };
 
 export default NavBar;
-const navbarStylesId = 'navbar-styles';
-if (!document.getElementById(navbarStylesId)) {
-  const styleElement = document.createElement('style');
-  styleElement.id = navbarStylesId;
-  styleElement.textContent = `
-    .navbar {
-      background-color: #1976d2;
-      color: white;
-      padding: 0.5rem 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .navbar-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .navbar-brand {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    
-    .nav-links {
-      display: flex;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    
-    .nav-links li {
-      margin-left: 1.5rem;
-    }
-    
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      padding: 0.5rem 0;
-      border-bottom: 2px solid transparent;
-      transition: all 0.3s ease;
-    }
-    
-    .nav-links a:hover,
-    .nav-links a.active {
-      border-bottom-color: white;
-      opacity: 0.9;
-    }
-    
-    .nav-links .material-icons {
-      margin-right: 0.5rem;
-      font-size: 1.2rem;
-    }
-  `;
-  document.head.appendChild(styleElement);
-}
-
-// Export the component
-window.NavBar = NavBar;
