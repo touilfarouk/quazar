@@ -15,7 +15,8 @@ const DemoComponent = {
         <!-- Reactive Text Input -->
         <input
           class="input"
-          v-model="name"
+          :value="name"
+          @input="$emit('update:name', $event.target.value)"
           placeholder="Type your name"
         />
 
@@ -27,14 +28,14 @@ const DemoComponent = {
         <div class="row mt-md">
           <button
             class="btn btn-primary"
-            @click="increment"
+            @click="$emit('increment')"
           >
             Click me
           </button>
 
           <button
             class="btn btn-negative"
-            @click="reset"
+            @click="$emit('reset')"
           >
             Reset
           </button>
@@ -64,7 +65,7 @@ const DemoComponent = {
     name: String,
     counter: Number
   },
-  emits: ['show-contact', 'increment', 'reset']
+  emits: ['show-contact', 'increment', 'reset', 'update:name']
 };
 
 // Contact Form Component

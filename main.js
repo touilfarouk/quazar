@@ -80,7 +80,7 @@ const AppComponent = {
       <!-- Demo Component -->
       <DemoComponent
         v-if="!showContactForm"
-        :name="name"
+        v-model:name="name"
         :counter="counter"
         @show-contact="toggleContactForm"
         @increment="increment"
@@ -122,7 +122,9 @@ app.config.errorHandler = (err, vm, info) => {
   console.error('Info:', info);
 };
 
-// Development warnings
-if (process.env.NODE_ENV === 'development') {
+// Development warnings - using URL parameter for development mode
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('dev') === 'true' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
   app.config.devtools = true;
+  console.log('Vue devtools enabled');
 }
