@@ -1,34 +1,119 @@
 // NavBar Component
 const NavBar = {
   template: `
-    <nav class="navbar">
-      <div class="navbar-container">
-        <div class="navbar-brand">Quasar</div>
-        <ul class="nav-links">
-          <li><a href="#" @click.prevent="navigate('home')" :class="{ 'active': activeTab === 'home' }">
-            <span class="material-icons">home</span> Accueil
-          </a></li>
-          <li><a href="#" @click.prevent="navigate('about')" :class="{ 'active': activeTab === 'about' }">
-            <span class="material-icons">info</span> À propos
-          </a></li>
-        </ul>
-      </div>
-    </nav>
+    <q-header elevated class="bg-primary text-white">
+      <q-toolbar>
+        <q-toolbar-title class="text-weight-bold">
+          Mon App Quasar
+        </q-toolbar-title>
+
+        <!-- Desktop Navigation -->
+        <div class="gt-sm">
+          <q-tabs v-model="activeTab" active-color="white" indicator-color="yellow-8" dense inline-label>
+            <q-route-tab 
+              to="/" 
+              name="home"
+              label="Accueil" 
+              icon="home"
+              exact
+              class="q-mx-sm"
+            />
+            <q-route-tab 
+              to="/about" 
+              name="about"
+              label="À propos" 
+              icon="info"
+              class="q-mx-sm"
+            />
+          </q-tabs>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          class="lt-md"
+          @click="mobileMenuOpen = !mobileMenuOpen"
+          aria-label="Menu"
+        />
+      </q-toolbar>
+
+      <!-- Mobile Navigation -->
+      <q-drawer
+        v-model="mobileMenuOpen"
+        side="right"
+        overlay
+        bordered
+        class="bg-primary text-white"
+        :width="200"
+      >
+        <q-list>
+          <q-item 
+            v-ripple
+            clickable
+            to="/"
+            exact
+            active-class="text-yellow-8"
+            @click="mobileMenuOpen = false"
+            class="q-pa-md"
+          >
+            <q-item-section avatar>
+              <q-icon name="home" />
+            </q-item-section>
+            <q-item-section>Accueil</q-item-section>
+          </q-item>
+          
+          <q-separator color="white-20" />
+          
+          <q-item 
+            v-ripple
+            clickable
+            to="/about"
+            active-class="text-yellow-8"
+            @click="mobileMenuOpen = false"
+            class="q-pa-md"
+          >
+            <q-item-section avatar>
+              <q-icon name="info" />
+            </q-item-section>
+            <q-item-section>À propos</q-item-section>
+          </q-item>
+        </q-list>
+      </q-drawer>
+    </q-header>
   `,
   data() {
     return {
-      activeTab: 'home'
+      activeTab: 'home',
+      mobileMenuOpen: false,
+      windowWidth: window.innerWidth
     };
   },
+  watch: {
+    '$route'(to) {
+      this.activeTab = to.name || 'home';
+    }
+  },
+  created() {
+    this.activeTab = this.$route.name || 'home';
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   methods: {
-    navigate(tab) {
-      this.activeTab = tab;
-      this.$emit('navigate', tab);
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+      if (this.windowWidth > 599) {
+        this.mobileMenuOpen = false;
+      }
     }
   }
 };
 
-// Add styles if not already added
+export default NavBar;
 const navbarStylesId = 'navbar-styles';
 if (!document.getElementById(navbarStylesId)) {
   const styleElement = document.createElement('style');
