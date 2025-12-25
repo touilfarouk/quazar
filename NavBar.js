@@ -27,24 +27,28 @@ const NavBar = {
               label="Accueil"
               to="/"
               exact
+              class="text-white"
             />
             <q-route-tab
               name="products"
               icon="store"
               label="Produits"
               to="/products"
+              class="text-white"
             />
             <q-route-tab
               name="order"
               icon="shopping_cart"
               label="Commander"
               to="/order"
+              class="text-white"
             />
             <q-route-tab
               name="about"
               icon="info"
               label="À propos"
               to="/about"
+              class="text-white"
             />
           </q-tabs>
         </div>
@@ -76,6 +80,7 @@ const NavBar = {
               to="/"
               exact
               @click="closeMobileMenu"
+              class="text-primary"
             >
               <q-item-section avatar>
                 <q-icon name="home" />
@@ -88,6 +93,7 @@ const NavBar = {
               clickable
               to="/products"
               @click="closeMobileMenu"
+              class="text-primary"
             >
               <q-item-section avatar>
                 <q-icon name="store" />
@@ -100,6 +106,7 @@ const NavBar = {
               clickable
               to="/order"
               @click="closeMobileMenu"
+              class="text-primary"
             >
               <q-item-section avatar>
                 <q-icon name="shopping_cart" />
@@ -112,6 +119,7 @@ const NavBar = {
               clickable
               to="/about"
               @click="closeMobileMenu"
+              class="text-primary"
             >
               <q-item-section avatar>
                 <q-icon name="info" />

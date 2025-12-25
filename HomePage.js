@@ -1,178 +1,222 @@
+import products from './productsData.js';
+
 const HomePage = {
   template: `
-    <q-page padding>
-      <div class="q-pa-md">
-        <div class="text-center q-mb-xl">
-          <h1 class="text-h3 text-weight-bold text-primary q-mb-md">Bienvenue sur Mon App Quasar</h1>
-          <p class="text-h6 text-grey-8">Découvrez nos composants de calendrier</p>
+    <q-page>
+      <div class="page-inner">
+        <!-- Top intro removed so carousel can occupy the full viewport -->
+
+        <!-- Home carousel (placeholder images) -->
+        <div class="home-carousel q-mb-xl">
+          <q-carousel v-model="slide" animated swipeable control-type="flat" autoplay="4000" height="320">
+            <q-carousel-slide v-for="(src, index) in slides" :name="index.toString()" :key="index" :img-src="src">
+              <div class="slide-caption text-white">
+                <div class="text-h6">Handmade & Cozy</div>
+                <div class="text-subtitle2">Fundraiser by Glen Forest — December to January</div>
+              </div>
+            </q-carousel-slide>
+          </q-carousel>
+
+          <!-- Hero overlay (from provided template) -->
+          <div class="hero-overlay container">
+            <h1 class="hero-title">Chaussures Premium en Cuir</h1>
+            <p class="hero-subtitle">Fabriquées avec excellence, conçues pour le confort</p>
+            <q-btn class="btn-primary q-mt-md" label="Acheter maintenant" @click="scrollToProducts" />
+          </div>
+
+          <div class="carousel-dots row justify-center q-mt-sm" ref="dotsContainer">
+            <div
+              v-for="(src, index) in slides"
+              :key="'dot-'+index"
+              class="dot"
+              :class="{ active: Number(slide) === index }"
+              @click="slide = index.toString()"
+              @mouseenter="onDotEnter(index, $event)"
+              @mouseleave="onDotLeave"
+            ></div>
+
+            <div v-if="hoverIndex !== null" class="dot-preview" :style="{ left: previewX + 'px' }">
+              <q-img :src="slides[hoverIndex]" class="dot-thumb" ratio="16/10" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="feature-cards-container q-mb-xl">
+          <div class="row q-col-gutter-lg">
+            <div class="col-12 col-md-4">
+              <div class="feature-card gradient-1">
+                <div class="feature-icon">
+                  <i class="fas fa-shipping-fast"></i>
+                </div>
+                <div class="feature-content">
+                  <h4>Livraison Rapide</h4>
+                  <p>Expédition sous 24-48h partout au Maroc</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="feature-card gradient-2">
+                <div class="feature-icon">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="feature-content">
+                  <h4>Qualité Garantie</h4>
+                  <p>Produits certifiés avec garantie 2 ans</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="feature-card gradient-3">
+                <div class="feature-icon">
+                  <i class="fas fa-headset"></i>
+                </div>
+                <div class="feature-content">
+                  <h4>Support Client</h4>
+                  <p>Assistance 7j/7 par téléphone et email</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         
         <div class="row q-col-gutter-lg q-mb-xl">
-          <!-- Date Picker -->
-          <div class="col-12 col-md-6">
-            <q-card class="my-card">
-              <q-card-section>
-                <div class="text-h6">Sélecteur de date</div>
-                <q-separator class="q-my-sm" />
-                <div class="q-pa-md">
-                  <div class="q-gutter-md" style="max-width: 300px">
-                    <q-input
-                      filled
-                      v-model="date"
-                      label="Choisir une date"
-                    >
-                      <template v-slot:prepend>
-                        <q-icon name="event" class="cursor-pointer">
-                          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                            <q-date v-model="date" mask="YYYY/MM/DD">
-                              <div class="row items-center justify-end">
-                                <q-btn v-close-popup label="Fermer" color="primary" flat />
-                              </div>
-                            </q-date>
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card>
-          </div>
-
-          <!-- Time Picker -->
-          <div class="col-12 col-md-6">
-            <q-card class="my-card">
-              <q-card-section>
-                <div class="text-h6">Sélecteur d'heure</div>
-                <q-separator class="q-my-sm" />
-                <div class="q-pa-md">
-                  <div class="q-gutter-md" style="max-width: 300px">
-                    <q-input
-                      filled
-                      v-model="time"
-                      label="Choisir une heure"
-                    >
-                      <template v-slot:prepend>
-                        <q-icon name="access_time" class="cursor-pointer">
-                          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                            <q-time v-model="time" mask="HH:mm">
-                              <div class="row items-center justify-end q-gutter-sm">
-                                <q-btn label="Maintenant" color="primary" flat @click="setCurrentTime" />
-                                <q-btn v-close-popup label="Fermer" color="primary" flat />
-                              </div>
-                            </q-time>
-                          </q-popup-proxy>
-                        </q-icon>
-                      </template>
-                    </q-input>
-                  </div>
-                </div>
-              </q-card-section>
-            </q-card>
-          </div>
-
-          <!-- Combined Date & Time Picker -->
           <div class="col-12">
-            <q-card class="my-card">
-              <q-card-section>
-                <div class="text-h6">Sélecteur de date et heure</div>
-                <q-separator class="q-my-sm" />
-                <div class="q-pa-md">
-                  <div class="row q-gutter-md">
-                    <div class="col-12 col-md-4">
-                      <q-input
-                        filled
-                        v-model="dateTime.date"
-                        label="Date et heure"
-                        class="q-mb-md"
-                      >
-                        <template v-slot:prepend>
-                          <q-icon name="event" class="cursor-pointer">
-                            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                              <q-date v-model="dateTime.date" mask="YYYY/MM/DD" :options="futureDatesOnly">
-                                <div class="row items-center justify-end">
-                                  <q-btn v-close-popup label="Fermer" color="primary" flat />
-                                </div>
-                              </q-date>
-                            </q-popup-proxy>
-                          </q-icon>
-                        </template>
-                        <template v-slot:append>
-                          <q-icon name="access_time" class="cursor-pointer">
-                            <q-popup-proxy cover transition-show="scale" transition-hide="scale" @before-show="updateProxy">
-                              <q-time v-model="proxyDate" mask="YYYY/MM/DD HH:mm" format24h>
-                                <div class="row items-center justify-end q-gutter-sm">
-                                  <q-btn label="Maintenant" color="primary" flat @click="setDateTimeNow" />
-                                  <q-btn v-close-popup label="Fermer" color="primary" flat />
-                                </div>
-                              </q-time>
-                            </q-popup-proxy>
-                          </q-icon>
-                        </template>
-                      </q-input>
+            <div class="products-grid" id="home-products">
+              <q-card v-for="p in products" :key="p.id" class="product-card">
+                <div v-if="p.badge" class="product-badge">{{ p.badge }}</div>
+                <q-btn round dense flat icon="favorite_border" class="product-fav" @click.stop="toggleFavorite(p)" :class="{ 'text-negative': isFavorite(p) }" />
+                <img :src="p.img" :alt="p.name" class="product-image" />
+                <q-card-section class="product-info">
+                  <div>
+                    <div class="product-name">{{ p.name }}</div>
+                    <div class="product-description">{{ p.description }}</div>
+                    <div class="product-meta">
+                      <div class="stars">
+                        <span v-for="n in Math.round(p.rating || 0)" :key="n">★</span>
+                        <span v-for="n in (5 - Math.round(p.rating || 0))" :key="'e'+n">☆</span>
+                      </div>
+                      <div class="rating-count">{{ p.rating ? p.rating.toFixed(1) : '' }}</div>
                     </div>
                   </div>
-                  <div class="text-body2 q-mt-sm">
-                    <p>Date sélectionnée: {{ formattedDateTime }}</p>
+
+                  <div class="row items-center q-mt-sm justify-between">
+                    <div class="product-price">{{ formatPrice(p.price) }}</div>
+                    <div style="min-width: 140px;">
+                      <q-btn dense flat color="primary" label="Voir" @click="openDetails(p)" />
+                      <q-btn dense color="primary" label="Commander" @click="openDetails(p)" class="btn-add-cart q-ml-sm" />
+                    </div>
                   </div>
-                </div>
-              </q-card-section>
-            </q-card>
+                </q-card-section>
+              </q-card>
+            </div>
           </div>
         </div>
+
+        <!-- Product Details / Order Dialog -->
+        <q-dialog v-model="dialogOpen" persistent>
+          <q-card style="min-width: 320px; max-width: 560px;">
+            <q-card-section class="row items-start">
+              <div style="flex: 1 1 40%;">
+                <q-img :src="selectedProduct?.img" ratio="1" class="q-mr-md" />
+              </div>
+              <div style="flex: 1 1 60%;">
+                <div class="text-h6">{{ selectedProduct?.name }}</div>
+                <div class="text-caption q-mt-xs">{{ selectedProduct?.description }}</div>
+                <div class="product-price q-mt-md">{{ formatPrice(selectedProduct?.price || '') }}</div>
+
+                <div class="q-mt-md">
+                  <q-input dense v-model="order.parentName" label="Parent Name" />
+                  <q-input dense v-model="order.contact" label="Email or Phone" class="q-mt-sm" />
+                  <q-input dense v-model="order.studentName" label="Student's Name" class="q-mt-sm" />
+                  <q-input dense v-model="order.grade" label="Grade" class="q-mt-sm" />
+                  <q-input dense v-model="order.color" label="Color Preference" class="q-mt-sm" />
+                </div>
+              </div>
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="Fermer" color="primary" v-close-popup @click="closeDialog" />
+              <q-btn color="primary" label="Envoyer la commande" @click="sendOrderEmail" />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
+
       </div>
     </q-page>
   `,
   data() {
     return {
-      date: '',
-      time: '',
-      dateTime: {
-        date: '',
-        time: ''
+      // products list
+      products,
+      dialogOpen: false,
+      selectedProduct: null,
+      order: {
+        parentName: '',
+        contact: '',
+        studentName: '',
+        grade: '',
+        color: ''
       },
-      proxyDate: ''
-    }
-  },
-  computed: {
-    formattedDateTime() {
-      if (!this.dateTime.date) return 'Aucune date sélectionnée';
-      const options = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      };
-      return new Date(this.dateTime.date + ' ' + (this.dateTime.time || '00:00')).toLocaleDateString('fr-FR', options);
+
+      // carousel (picsum.photos seeded placeholders)
+      slides: [
+        'https://picsum.photos/seed/cozy/1200/480',
+        'https://picsum.photos/seed/handmade/1200/480',
+        'https://picsum.photos/seed/fundraiser/1200/480'
+      ],
+      slide: '0',
+      // hover thumbnail
+      hoverIndex: null,
+      previewX: 0
     }
   },
   methods: {
-    setCurrentTime() {
-      const now = new Date();
-      this.time = now.getHours().toString().padStart(2, '0') + ':' + 
-                 now.getMinutes().toString().padStart(2, '0');
+    formatPrice(p) { return p ? `$${p}` : ''; },
+    openDetails(p) {
+      this.selectedProduct = p;
+      this.order = { parentName: '', contact: '', studentName: '', grade: '', color: '' };
+      this.dialogOpen = true;
     },
-    updateProxy() {
-      this.proxyDate = this.dateTime.date + ' ' + (this.dateTime.time || '00:00');
+    closeDialog() {
+      this.dialogOpen = false;
+      this.selectedProduct = null;
     },
-    setDateTimeNow() {
-      const now = new Date();
-      this.dateTime.date = now.toISOString().split('T')[0].replace(/-/g, '/');
-      this.dateTime.time = now.getHours().toString().padStart(2, '0') + ':' + 
-                          now.getMinutes().toString().padStart(2, '0');
-      this.proxyDate = this.dateTime.date + ' ' + this.dateTime.time;
+    sendOrderEmail() {
+      if (!this.selectedProduct) return;
+      const subject = encodeURIComponent(`Commande: ${this.selectedProduct.name}`);
+      const bodyLines = [];
+      bodyLines.push(`Produit: ${this.selectedProduct.name}`);
+      bodyLines.push(`Prix: $${this.selectedProduct.price}`);
+      bodyLines.push(`Parent: ${this.order.parentName || '[non fourni]'}`);
+      bodyLines.push(`Contact: ${this.order.contact || '[non fourni]'}`);
+      bodyLines.push(`Étudiant: ${this.order.studentName || '[non fourni]'}`);
+      bodyLines.push(`Grade: ${this.order.grade || '[non fourni]'}`);
+      bodyLines.push(`Couleur: ${this.order.color || '[non fourni]'}`);
+      const body = encodeURIComponent(bodyLines.join("\n"));
+      const mailto = `mailto:?subject=${subject}&body=${body}`;
+      window.location.href = mailto;
+      this.closeDialog();
     },
-    futureDatesOnly(date) {
-      return date >= new Date().toISOString().split('T')[0].replace(/-/g, '/');
-    }
-  },
-  watch: {
-    proxyDate(val) {
-      const [date, time] = val.split(' ');
-      this.dateTime.date = date;
-      this.dateTime.time = time || '00:00';
+    toggleFavorite(p) {
+      p._fav = !p._fav;
+    },
+    isFavorite(p) { return !!p._fav; },
+    onDotEnter(index, event) {
+      this.hoverIndex = index;
+      const container = this.$refs.dotsContainer;
+      if (container && event.currentTarget) {
+        const containerRect = container.getBoundingClientRect();
+        const dotRect = event.currentTarget.getBoundingClientRect();
+        this.previewX = dotRect.left - containerRect.left + dotRect.width / 2;
+      }
+    },
+    onDotLeave() {
+      this.hoverIndex = null;
+    },
+    scrollToProducts() {
+      const el = document.getElementById('home-products');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 };
