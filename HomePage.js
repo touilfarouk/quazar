@@ -158,14 +158,16 @@ const HomePage = {
 
       // carousel (picsum.photos seeded placeholders)
       slides: [
-        'https://picsum.photos/seed/cozy/1200/480',
-        'https://picsum.photos/seed/handmade/1200/480',
-        'https://picsum.photos/seed/fundraiser/1200/480'
+        'img/slide1.png',
+        'img/slide2.png',
+        'img/slide3.png',
+        'img/slide4.png'
       ],
       slide: '0',
       // hover thumbnail
       hoverIndex: null,
-      previewX: 0
+      previewX: 0,
+      favorites: []
     }
   },
   methods: {
@@ -173,7 +175,7 @@ const HomePage = {
     openDetails(p) {
       this.selectedProduct = p;
       this.order = { parentName: '', contact: '', studentName: '', grade: '', color: '' };
-      this.dialogOpen = true;
+      this.productDialogOpen = true;
     },
     closeDialog() {
       this.dialogOpen = false;
