@@ -6,7 +6,8 @@ const { createRouter, createWebHashHistory } = VueRouter;
 import NavBar from './NavBar.js';
 import HomePage from './HomePage.js';
 import AboutPage from './AboutPage.js';
-
+import ProductsPage from './ProductsPage.js';
+import OrderPage from './OrderPage.js';
 
 // Define routes
 const routes = [
@@ -21,6 +22,18 @@ const routes = [
     component: AboutPage,
     name: 'about',
     meta: { title: 'À propos' }
+  },
+  { 
+    path: '/products', 
+    component: ProductsPage,
+    name: 'products',
+    meta: { title: 'Produits' }
+  },
+  { 
+    path: '/order', 
+    component: OrderPage,
+    name: 'order',
+    meta: { title: 'Commander' }
   },
   { 
     path: '/:pathMatch(.*)*', 
@@ -53,9 +66,9 @@ app.component('nav-bar', NavBar);
 app.use(Quasar, {
   config: {
     brand: {
-      primary: '#1976d2',
+      primary: '#2E7D32', // green 700
       secondary: '#26A69A',
-      accent: '#9C27B0',
+      accent: '#66BB6A', // soft green accent
       dark: '#1d1d1d',
       positive: '#21BA45',
       negative: '#C10015',

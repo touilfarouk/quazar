@@ -14,7 +14,7 @@ const NavBar = {
         />
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+            <img src="img/brouwn10.png" alt="logo">
           </q-avatar>
           Mon App Quasar
         </q-toolbar-title>
@@ -27,6 +27,18 @@ const NavBar = {
               label="Accueil"
               to="/"
               exact
+            />
+            <q-route-tab
+              name="products"
+              icon="store"
+              label="Produits"
+              to="/products"
+            />
+            <q-route-tab
+              name="order"
+              icon="shopping_cart"
+              label="Commander"
+              to="/order"
             />
             <q-route-tab
               name="about"
@@ -49,8 +61,8 @@ const NavBar = {
       <!-- Mobile Menu -->
       <q-drawer
         v-model="mobileMenuOpen"
-        :width="200"
-        :breakpoint="600"
+        :width="220"
+        show-if-above="600"
         bordered
         overlay
         side="left"
@@ -69,6 +81,30 @@ const NavBar = {
                 <q-icon name="home" />
               </q-item-section>
               <q-item-section>Accueil</q-item-section>
+            </q-item>
+
+            <q-item
+              v-ripple
+              clickable
+              to="/products"
+              @click="closeMobileMenu"
+            >
+              <q-item-section avatar>
+                <q-icon name="store" />
+              </q-item-section>
+              <q-item-section>Produits</q-item-section>
+            </q-item>
+
+            <q-item
+              v-ripple
+              clickable
+              to="/order"
+              @click="closeMobileMenu"
+            >
+              <q-item-section avatar>
+                <q-icon name="shopping_cart" />
+              </q-item-section>
+              <q-item-section>Commander</q-item-section>
             </q-item>
 
             <q-item
