@@ -19,9 +19,6 @@ const HomePage = {
 
           <!-- Hero overlay (from provided template) -->
           <div class="hero-overlay container">
-            <h1 class="hero-title">Chaussures Premium en Cuir</h1>
-            <p class="hero-subtitle">Fabriquées avec excellence, conçues pour le confort</p>
-            <q-btn class="btn-primary q-mt-md" label="Acheter maintenant" @click="scrollToProducts" />
           </div>
 
           <div class="carousel-dots row justify-center q-mt-sm" ref="dotsContainer">
@@ -50,8 +47,8 @@ const HomePage = {
                   <i class="fas fa-shipping-fast"></i>
                 </div>
                 <div class="feature-content">
-                  <h4>Livraison Rapide</h4>
-                  <p>Expédition sous 24-48h partout au Maroc</p>
+                  <h4>{{ $t('home.features.fastDelivery.title') }}</h4>
+                  <p>{{ $t('home.features.fastDelivery.description') }}</p>
                 </div>
               </div>
             </div>
@@ -61,8 +58,8 @@ const HomePage = {
                   <i class="fas fa-shield-alt"></i>
                 </div>
                 <div class="feature-content">
-                  <h4>Qualité Garantie</h4>
-                  <p>Produits certifiés avec garantie 2 ans</p>
+                  <h4>{{ $t('home.features.quality.title') }}</h4>
+                  <p>{{ $t('home.features.quality.description') }}</p>
                 </div>
               </div>
             </div>
@@ -72,8 +69,8 @@ const HomePage = {
                   <i class="fas fa-headset"></i>
                 </div>
                 <div class="feature-content">
-                  <h4>Support Client</h4>
-                  <p>Assistance 7j/7 par téléphone et email</p>
+                  <h4>{{ $t('home.features.support.title') }}</h4>
+                  <p>{{ $t('home.features.support.description') }}</p>
                 </div>
               </div>
             </div>

@@ -3,56 +3,130 @@ const { createI18n } = VueI18n;
 const messages = {
   en: {
     app: {
-      title: 'My Quasar App',
+      title: 'crochetyou.can.do',
       home: 'Home',
+      products: 'Products',
+      order: 'Order',
       about: 'About'
     },
     navbar: {
       language: 'Language',
       github: 'GitHub',
       twitter: 'Twitter',
-      linkedin: 'LinkedIn'
+      linkedin: 'LinkedIn',
+      menu: 'Menu'
     },
     home: {
-      heading: 'Welcome to My Quasar App',
-      subheading: 'Discover our calendar components',
-      datePickerTitle: 'Date picker',
-      datePickerLabel: 'Choose a date',
-      timePickerTitle: 'Time picker',
-      timePickerLabel: 'Choose a time',
-      dateTimePickerTitle: 'Date and time picker',
-      dateTimePickerLabel: 'Date and time',
-      selectedDate: 'Selected date:',
-      noDate: 'No date selected',
+      heroTitle: 'Premium Leather Shoes',
+      heroSubtitle: 'Crafted with excellence, designed for comfort',
+      buyNow: 'Buy Now',
+      ourCollection: 'Our Collection',
+      features: {
+        fastDelivery: {
+          title: 'Fast Delivery',
+          description: 'Shipping within 24-48h throughout Morocco'
+        },
+        quality: {
+          title: 'Quality Guaranteed',
+          description: 'Certified products with 2-year warranty'
+        },
+        support: {
+          title: 'Customer Support',
+          description: 'Assistance 7 days a week by phone and email'
+        }
+      }
+    },
+    products: {
+      title: 'Our Products',
+      see: 'View',
+      order: 'Order',
+      addToCart: 'Add to Cart',
+      bestSeller: 'Best Seller',
+      new: 'New',
+      limited: 'Limited Edition',
+      popular: 'Popular',
+      trending: 'Trending',
+      premium: 'Premium',
+      summer: 'Summer',
+      versatile: 'Versatile'
+    },
+    order: {
+      title: 'Place Order',
+      parentName: 'Parent Name',
+      contact: 'Email or Phone',
+      studentName: 'Student\'s Name',
+      grade: 'Grade',
+      color: 'Color Preference',
       close: 'Close',
-      now: 'Now'
+      sendOrder: 'Send Order'
+    },
+    about: {
+      title: 'About Us',
+      description: 'Premium leather shoes crafted with excellence.'
     }
   },
   fr: {
     app: {
-      title: 'Mon App Quasar',
+      title: 'crochetyou.can.do',
       home: 'Accueil',
+      products: 'Produits',
+      order: 'Commander',
       about: 'À propos'
     },
     navbar: {
       language: 'Langue',
       github: 'GitHub',
       twitter: 'Twitter',
-      linkedin: 'LinkedIn'
+      linkedin: 'LinkedIn',
+      menu: 'Menu'
     },
     home: {
-      heading: 'Bienvenue sur Mon App Quasar',
-      subheading: 'Découvrez nos composants de calendrier',
-      datePickerTitle: 'Sélecteur de date',
-      datePickerLabel: 'Choisir une date',
-      timePickerTitle: 'Sélecteur d\'heure',
-      timePickerLabel: 'Choisir une heure',
-      dateTimePickerTitle: 'Sélecteur de date et heure',
-      dateTimePickerLabel: 'Date et heure',
-      selectedDate: 'Date sélectionnée :',
-      noDate: 'Aucune date sélectionnée',
+      heroTitle: 'Chaussures Premium en Cuir',
+      heroSubtitle: 'Fabriquées avec excellence, conçues pour le confort',
+      buyNow: 'Acheter maintenant',
+      ourCollection: 'Notre Collection',
+      features: {
+        fastDelivery: {
+          title: 'Livraison Rapide',
+          description: 'Expédition sous 24-48h partout au Maroc'
+        },
+        quality: {
+          title: 'Qualité Garantie',
+          description: 'Produits certifiés avec garantie 2 ans'
+        },
+        support: {
+          title: 'Support Client',
+          description: 'Assistance 7j/7 par téléphone et email'
+        }
+      }
+    },
+    products: {
+      title: 'Nos Produits',
+      see: 'Voir',
+      order: 'Commander',
+      addToCart: 'Ajouter au panier',
+      bestSeller: 'Meilleure vente',
+      new: 'Nouveau',
+      limited: 'Édition limitée',
+      popular: 'Populaire',
+      trending: 'Tendance',
+      premium: 'Premium',
+      summer: 'Été',
+      versatile: 'Versatile'
+    },
+    order: {
+      title: 'Commande',
+      parentName: 'Nom du parent',
+      contact: 'Email ou téléphone',
+      studentName: 'Nom de l\'étudiant',
+      grade: 'Niveau',
+      color: 'Préférence de couleur',
       close: 'Fermer',
-      now: 'Maintenant'
+      sendOrder: 'Envoyer la commande'
+    },
+    about: {
+      title: 'À propos',
+      description: 'Chaussures en cuir premium fabriquées avec excellence.'
     }
   },
   ar: {

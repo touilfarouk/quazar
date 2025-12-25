@@ -9,6 +9,9 @@ import AboutPage from './AboutPage.js';
 import ProductsPage from './ProductsPage.js';
 import OrderPage from './OrderPage.js';
 
+// Import i18n
+import i18n from './i18n.js';
+
 // Define routes
 const routes = [
   { 
@@ -81,9 +84,12 @@ app.use(Quasar, {
 // Use router
 app.use(router);
 
+// Use i18n
+app.use(i18n);
+
 // Update document title on route change
 router.beforeEach((to, from, next) => {
-  document.title = to.meta?.title ? `${to.meta.title} | Mon App Quasar` : 'Mon App Quasar';
+  document.title = to.meta?.title ? `${to.meta.title} | crochetyou.can.do` : 'crochetyou.can.do';
   next();
 });
 
