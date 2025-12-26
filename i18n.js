@@ -20,21 +20,7 @@ const messages = {
       heroTitle: 'Premium Leather Shoes',
       heroSubtitle: 'Crafted with excellence, designed for comfort',
       buyNow: 'Buy Now',
-      ourCollection: 'Our Collection',
-      features: {
-        fastDelivery: {
-          title: 'Fast Delivery',
-          description: 'Shipping within 24-48h throughout Morocco'
-        },
-        quality: {
-          title: 'Quality Guaranteed',
-          description: 'Certified products with 2-year warranty'
-        },
-        support: {
-          title: 'Customer Support',
-          description: 'Assistance 7 days a week by phone and email'
-        }
-      }
+      ourCollection: 'Our Collection'
     },
     products: {
       title: 'Our Products',
@@ -84,21 +70,7 @@ const messages = {
       heroTitle: 'Chaussures Premium en Cuir',
       heroSubtitle: 'Fabriquées avec excellence, conçues pour le confort',
       buyNow: 'Acheter maintenant',
-      ourCollection: 'Notre Collection',
-      features: {
-        fastDelivery: {
-          title: 'Livraison Rapide',
-          description: 'Expédition sous 24-48h partout au Maroc'
-        },
-        quality: {
-          title: 'Qualité Garantie',
-          description: 'Produits certifiés avec garantie 2 ans'
-        },
-        support: {
-          title: 'Support Client',
-          description: 'Assistance 7j/7 par téléphone et email'
-        }
-      }
+      ourCollection: 'Notre Collection'
     },
     products: {
       title: 'Nos Produits',

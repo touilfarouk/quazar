@@ -38,44 +38,6 @@ const HomePage = {
           </div>
         </div>
 
-        <!-- Feature Cards -->
-        <div class="feature-cards-container q-mb-xl">
-          <div class="row q-col-gutter-lg">
-            <div class="col-12 col-md-4">
-              <div class="feature-card gradient-1">
-                <div class="feature-icon">
-                  <i class="fas fa-shipping-fast"></i>
-                </div>
-                <div class="feature-content">
-                  <h4>{{ $t('home.features.fastDelivery.title') }}</h4>
-                  <p>{{ $t('home.features.fastDelivery.description') }}</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-4">
-              <div class="feature-card gradient-2">
-                <div class="feature-icon">
-                  <i class="fas fa-shield-alt"></i>
-                </div>
-                <div class="feature-content">
-                  <h4>{{ $t('home.features.quality.title') }}</h4>
-                  <p>{{ $t('home.features.quality.description') }}</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-4">
-              <div class="feature-card gradient-3">
-                <div class="feature-icon">
-                  <i class="fas fa-headset"></i>
-                </div>
-                <div class="feature-content">
-                  <h4>{{ $t('home.features.support.title') }}</h4>
-                  <p>{{ $t('home.features.support.description') }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         
         <div class="row q-col-gutter-lg q-mb-xl">
           <div class="col-12">
