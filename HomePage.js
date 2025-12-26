@@ -77,7 +77,7 @@ const HomePage = {
           <q-card style="min-width: 320px; max-width: 560px;">
             <q-card-section class="row items-start">
               <div style="flex: 1 1 40%;">
-                <q-img :src="selectedProduct?.img" ratio="1" class="q-mr-md" />
+                <q-img :src="selectedProduct?.img" ratio="1" class="dialog-product-img q-mr-md" />
               </div>
               <div style="flex: 1 1 60%;">
                 <div class="text-h6">{{ selectedProduct?.name }}</div>
@@ -96,7 +96,7 @@ const HomePage = {
 
             <q-card-actions align="right">
               <q-btn flat label="Fermer" color="primary" v-close-popup @click="closeDialog" />
-              <q-btn color="primary" label="Envoyer la commande" @click="sendOrderEmail" />
+              <q-btn color="primary" class="btn-send-order" label="Envoyer la commande" @click="sendOrderEmail" />
             </q-card-actions>
           </q-card>
         </q-dialog>
@@ -123,7 +123,7 @@ const HomePage = {
         'img/slide1.png',
         'img/slide2.png',
         'img/slide3.png',
-        'img/slide4.png'
+        'img/slider4.png'
       ],
       slide: '0',
       // hover thumbnail
@@ -137,7 +137,7 @@ const HomePage = {
     openDetails(p) {
       this.selectedProduct = p;
       this.order = { parentName: '', contact: '', studentName: '', grade: '', color: '' };
-      this.productDialogOpen = true;
+      this.dialogOpen = true;
     },
     closeDialog() {
       this.dialogOpen = false;

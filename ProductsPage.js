@@ -49,7 +49,7 @@ const ProductsPage = {
           <q-card style="min-width: 320px; max-width: 560px;">
             <q-card-section class="row items-start">
               <div style="flex: 1 1 40%;">
-                <q-img :src="selectedProduct?.img" ratio="1" class="q-mr-md" />
+                <q-img :src="selectedProduct?.img" ratio="1" class="dialog-product-img q-mr-md" />
               </div>
               <div style="flex: 1 1 60%;">
                 <div class="text-h6">{{ selectedProduct?.name }}</div>
@@ -68,7 +68,7 @@ const ProductsPage = {
 
             <q-card-actions align="right">
               <q-btn flat label="Fermer" color="primary" v-close-popup @click="closeDialog" />
-              <q-btn color="primary" label="Envoyer la commande" @click="sendOrderEmail" />
+              <q-btn color="primary" class="btn-send-order" label="Envoyer la commande" @click="sendOrderEmail" />
             </q-card-actions>
           </q-card>
         </q-dialog>
