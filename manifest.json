@@ -1,0 +1,41 @@
+{
+  "name": "Mon Application Quasar",
+  "short_name": "Quazar",
+  "description": "Application Quasar - boutique et commandes",
+  "lang": "fr",
+  "start_url": ".",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#2E7D32",
+  "icons": [
+    {
+      "src": "img/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Produits",
+      "short_name": "Produits",
+      "url": "/#/products",
+      "description": "Voir la liste des produits"
+    },
+    {
+      "name": "Commander",
+      "short_name": "Commander",
+      "url": "/#/order",
+      "description": "Aller à la page de commande"
+    }
+  ],
+  "categories": ["shopping"]
+}

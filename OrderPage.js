@@ -197,8 +197,6 @@ const OrderPage = {
                   icon-right="send"
                   class="q-px-lg"
                   size="md"
-                  :loading="submitting"
-                  :disable="submitting"
                 />
               </div>
             </div>
@@ -219,8 +217,7 @@ const OrderPage = {
         quantity: 1,
         color: '',
         notes: ''
-      },
-      submitting: false
+      }
     };
   },
   computed: {
@@ -242,74 +239,44 @@ const OrderPage = {
         });
         return false;
       }
-      
-      // Email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (this.form.contact.includes('@') && !emailRegex.test(this.form.contact)) {
-        this.$q.notify({ 
-          color: 'negative', 
-          message: 'Please enter a valid email address', 
-          icon: 'error',
-          position: 'top'
-        });
-        return false;
-      }
-      
       return true;
     },
-    async submitOrder() {
+    submitOrder() {
       if (!this.validate()) return;
-      
-      this.submitting = true;
-      
-      try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        const p = this.selectedProduct;
-        const total = (p.price * this.form.quantity).toFixed(2);
-        const subject = encodeURIComponent(`Order: ${p.name}`);
-        const lines = [];
-        lines.push(`ORDER DETAILS`);
-        lines.push(`================`);
+      const p = this.selectedProduct;
+      const total = (p.price * this.form.quantity).toFixed(2);
+      const subject = encodeURIComponent(`Order: ${p.name}`);
+      const lines = [];
+      lines.push(`ORDER DETAILS`);
+      lines.push(`================`);
+      lines.push(``);
+      lines.push(`Product: ${p.name}`);
+      lines.push(`Unit Price: $${p.price}`);
+      lines.push(`Quantity: ${this.form.quantity}`);
+      lines.push(`Total: $${total}`);
+      lines.push(``);
+      lines.push(`CUSTOMER INFORMATION`);
+      lines.push(`================`);
+      lines.push(`Parent: ${this.form.parentName}`);
+      lines.push(`Contact: ${this.form.contact}`);
+      lines.push(`Student: ${this.form.studentName || '[not provided]'}`);
+      lines.push(`Grade: ${this.form.grade || '[not provided]'}`);
+      lines.push(`Color Preference: ${this.form.color || '[not provided]'}`);
+      if (this.form.notes) {
         lines.push(``);
-        lines.push(`Product: ${p.name}`);
-        lines.push(`Unit Price: $${p.price}`);
-        lines.push(`Quantity: ${this.form.quantity}`);
-        lines.push(`Total: $${total}`);
-        lines.push(``);
-        lines.push(`CUSTOMER INFORMATION`);
+        lines.push(`NOTES`);
         lines.push(`================`);
-        lines.push(`Parent: ${this.form.parentName}`);
-        lines.push(`Contact: ${this.form.contact}`);
-        lines.push(`Student: ${this.form.studentName || '[not provided]'}`);
-        lines.push(`Grade: ${this.form.grade || '[not provided]'}`);
-        lines.push(`Color Preference: ${this.form.color || '[not provided]'}`);
-        if (this.form.notes) {
-          lines.push(``);
-          lines.push(`NOTES`);
-          lines.push(`================`);
-          lines.push(this.form.notes);
-        }
-        const body = encodeURIComponent(lines.join('\n'));
-        window.location.href = `mailto:?subject=${subject}&body=${body}`;
-        
-        this.$q.notify({ 
-          color: 'positive', 
-          message: 'Email client opened. Please send the email.', 
-          icon: 'check_circle',
-          position: 'top'
-        });
-      } catch (error) {
-        this.$q.notify({ 
-          color: 'negative', 
-          message: 'An error occurred. Please try again.', 
-          icon: 'error',
-          position: 'top'
-        });
-      } finally {
-        this.submitting = false;
+        lines.push(this.form.notes);
       }
+      const body = encodeURIComponent(lines.join('\n'));
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+      
+      this.$q.notify({ 
+        color: 'positive', 
+        message: 'Email client opened. Please send the email.', 
+        icon: 'check_circle',
+        position: 'top'
+      });
     },
     downloadSummary() {
       if (!this.form.productId) { 
