@@ -7,6 +7,11 @@
   <meta name="description" content="Application avec Quasar">
   <meta name="theme-color" content="#2E7D32">
   <link rel="manifest" href="/manifest.json">
+  <!-- Apple / iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Quazar">
+  <link rel="apple-touch-icon" href="https://via.placeholder.com/192/2E7D32/FFFFFF.png?text=Q">
   
   <!-- Google Fonts - Robotof -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -46,6 +51,10 @@
     }
     .page-inner {
       padding: 0;
+    }
+    .backgroundpage-inner {
+      padding: 0;
+      background-color: #6a5845a1;
     }
     
     /* Product Cards - Smaller Size */
@@ -324,6 +333,69 @@
       const btn = document.getElementById('pwa-install-btn');
       if (btn) btn.remove();
     });
+
+    // Fallback for iOS and browsers that don't fire beforeinstallprompt
+    function isIos() {
+      return /iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase());
+    }
+    function isInStandaloneMode() {
+      return ('standalone' in window.navigator) && window.navigator.standalone;
+    }
+
+    function showIosInstallBanner() {
+      if (document.getElementById('ios-install-banner')) return;
+      const banner = document.createElement('div');
+      banner.id = 'ios-install-banner';
+      banner.innerHTML = '<div style="padding:12px 16px;color:#fff;background:#2E7D32;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.14);display:flex;gap:12px;align-items:center;max-width:320px;">
+        <span style="font-weight:600">Ajouter à l\'écran d\'accueil</span>
+        <span style="font-size:13px;opacity:0.95">Appuyez sur <strong>Partager</strong> puis <strong>Ajouter à l\'écran d\'accueil</strong></span>
+        <button id="ios-install-close" style="margin-left:auto;background:transparent;border:none;color:#fff;font-size:16px;cursor:pointer">✕</button>
+      </div>';
+      Object.assign(banner.style, {
+        position: 'fixed',
+        left: '16px',
+        right: '16px',
+        bottom: '16px',
+        zIndex: 10000,
+        display: 'flex',
+        justifyContent: 'center'
+      });
+      document.body.appendChild(banner);
+      document.getElementById('ios-install-close').addEventListener('click', () => banner.remove());
+    }
+
+    function showInstallHint() {
+      if (document.getElementById('pwa-install-hint')) return;
+      const hint = document.createElement('div');
+      hint.id = 'pwa-install-hint';
+      hint.textContent = "Pour installer : ouvrez le site en HTTPS (ou localhost) avec Chrome, puis utilisez la boîte de dialogue d'installation.";
+      Object.assign(hint.style, {
+        position: 'fixed',
+        left: '16px',
+        right: '16px',
+        bottom: '16px',
+        zIndex: 10000,
+        padding: '12px 16px',
+        background: '#333',
+        color: '#fff',
+        borderRadius: '10px',
+        textAlign: 'center',
+        fontSize: '13px'
+      });
+      document.body.appendChild(hint);
+      setTimeout(() => { const el = document.getElementById('pwa-install-hint'); if (el) el.remove(); }, 7000);
+    }
+
+    // After a short delay, if we didn't get beforeinstallprompt event, show guidance
+    setTimeout(() => {
+      if (isInStandaloneMode()) return; // already installed
+      if (isIos()) {
+        showIosInstallBanner();
+      } else if (!deferredPrompt) {
+        // probably missing HTTPS or criteria not satisfied
+        showInstallHint();
+      }
+    }, 3000);
   </script>
 </body>
 </html>
