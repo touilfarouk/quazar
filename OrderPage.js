@@ -34,7 +34,6 @@ const OrderPage = {
 
               <div class="row q-mt-md">
                 <q-btn label="Envoyer par email" color="primary" @click="submitOrder" />
-                <q-btn label="Télécharger le résumé" class="q-ml-sm" color="secondary" @click="downloadSummary" />
               </div>
             </div>
           </q-card-section>

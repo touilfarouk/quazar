@@ -45,7 +45,7 @@ const HomePage = {
               <q-card v-for="p in products" :key="p.id" class="product-card">
                 <div v-if="p.badge" class="product-badge">{{ p.badge }}</div>
                 <q-btn round dense flat icon="favorite_border" class="product-fav" @click.stop="toggleFavorite(p)" :class="{ 'text-negative': isFavorite(p) }" />
-                <img :src="p.img" :alt="p.name" class="product-image" />
+                <img :src="p.img" :alt="p.name" class="product-image" style="padding: 5px;" />
                 <q-card-section class="product-info">
                   <div>
                     <div class="product-name">{{ p.name }}</div>
@@ -75,13 +75,13 @@ const HomePage = {
         <!-- Product Details / Order Dialog -->
         <q-dialog v-model="dialogOpen" persistent>
           <q-card style="min-width: 320px; max-width: 560px;">
-            <q-card-section class="row items-start">
+            <q-card-section class="row items-start" style="padding: 5px;">
               <div style="flex: 1 1 40%;">
-                <q-img :src="selectedProduct?.img" ratio="1" class="dialog-product-img q-mr-md" />
+                <q-img :src="selectedProduct?.img" ratio="1" class="dialog-product-img q-mr-md" style="object-fit: cover; object-position: 50% 50%; padding: 8px; border-radius: 5px;" />
               </div>
               <div style="flex: 1 1 60%;">
                 <div class="text-h6">{{ selectedProduct?.name }}</div>
-                <div class="text-caption q-mt-xs">{{ selectedProduct?.description }}</div>
+                <div class="text-caption q-mt-xs" style="margin-top: 8px;">{{ selectedProduct?.description }}</div>
                 <div class="product-price q-mt-md">{{ formatPrice(selectedProduct?.price || '') }}</div>
 
                 <div class="q-mt-md">
