@@ -46,10 +46,10 @@ const HomePage = {
         <div class="row q-col-gutter-lg q-mb-xl">
           <div class="col-12">
             <div class="products-grid" id="home-products">
-              <q-card v-for="p in products" :key="p.id" class="product-card">
+              <q-card v-for="p in products" :key="p.id" :class="['product-card', { 'q-card--dark': ($q && $q.dark && $q.dark.isActive), 'q-dark': ($q && $q.dark && $q.dark.isActive) }]" tabindex="0" role="button" :aria-label="'Open details for ' + p.name" @click="openDetails(p)" @keydown.enter.prevent="openDetails(p)" @keydown.space.prevent="openDetails(p)">
                 <div v-if="p.badge" class="product-badge">{{ p.badge }}</div>
-                <q-btn round dense flat icon="favorite_border" class="product-fav" @click.stop="toggleFavorite(p)" :class="{ 'text-negative': isFavorite(p) }" />
-                <img :src="p.img" :alt="p.name" class="product-image" style="padding: 5px;" />
+                <q-btn round dense flat icon="favorite_border" class="product-fav" @click.stop="toggleFavorite(p)" :class="{ 'text-negative': isFavorite(p) }" :aria-pressed="isFavorite(p)" />
+                <img loading="lazy" :src="p.img" :alt="p.name" class="product-image" />
                 <q-card-section class="product-info">
                   <div>
                     <div class="product-name">{{ p.name }}</div>
@@ -66,8 +66,8 @@ const HomePage = {
                   <div class="row items-center q-mt-sm justify-between">
                     <div class="product-price">{{ formatPrice(p.price) }}</div>
                     <div style="min-width: 140px;">
-                      <q-btn dense flat color="primary" label="Voir" @click="openDetails(p)" />
-                      <q-btn dense color="primary" label="Commander" @click="openDetails(p)" class="btn-add-cart q-ml-sm" />
+                      <q-btn dense flat color="primary" label="View" @click.stop="openDetails(p)" />
+                      <q-btn dense color="primary" label="Order" @click.stop="openDetails(p)" class="btn-add-cart q-ml-sm" />
                     </div>
                   </div>
                 </q-card-section>

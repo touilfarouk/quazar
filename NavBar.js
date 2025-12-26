@@ -14,9 +14,9 @@ const NavBar = {
         />
         <q-toolbar-title>
           <q-avatar>
-            <img src="img/brouwn10.png" alt="logo">
+            <img src="img/icon-192.svg" alt="logo">
           </q-avatar>
-          {{ $t('app.title') }}
+          crochetyou.can.do
         </q-toolbar-title>
 
         <div class="gt-sm">
@@ -24,26 +24,26 @@ const NavBar = {
             <q-route-tab
               name="home"
               icon="home"
-              :label="$t('app.home')"
+              label="Home"
               to="/"
               exact
             />
             <q-route-tab
               name="products"
               icon="store"
-              :label="$t('app.products')"
+              label="Products"
               to="/products"
             />
             <q-route-tab
               name="order"
               icon="shopping_cart"
-              :label="$t('app.order')"
+              label="Order"
               to="/order"
             />
             <q-route-tab
               name="about"
               icon="info"
-              :label="$t('app.about')"
+              label="About"
               to="/about"
             />
           </q-tabs>
@@ -52,16 +52,15 @@ const NavBar = {
         <q-space />
 
         <div class="q-gutter-sm row items-center no-wrap">
-          <q-btn round dense flat color="white" icon="fab fa-github" />
-          <q-btn round dense flat color="white" icon="fab fa-twitter" />
-          <q-btn round dense flat color="white" icon="fab fa-linkedin" />
-          <q-btn 
-            round 
-            dense 
-            flat 
-            color="white" 
-            icon="language" 
-            @click="showLanguageDialog"
+          <!-- Theme toggle (light / dark) -->
+          <q-btn
+            round
+            dense
+            flat
+            color="white"
+            :icon="dark ? 'light_mode' : 'dark_mode'"
+            aria-label="Toggle theme"
+            @click="toggleDarkMode"
           />
         </div>
       </q-toolbar>
@@ -89,7 +88,7 @@ const NavBar = {
               <q-item-section avatar>
                 <q-icon name="home" />
               </q-item-section>
-              <q-item-section>{{ $t('app.home') }}</q-item-section>
+              <q-item-section>Home</q-item-section>
             </q-item>
 
             <q-item
@@ -102,7 +101,7 @@ const NavBar = {
               <q-item-section avatar>
                 <q-icon name="store" />
               </q-item-section>
-              <q-item-section>{{ $t('app.products') }}</q-item-section>
+              <q-item-section>Products</q-item-section>
             </q-item>
 
             <q-item
@@ -115,7 +114,7 @@ const NavBar = {
               <q-item-section avatar>
                 <q-icon name="shopping_cart" />
               </q-item-section>
-              <q-item-section>{{ $t('app.order') }}</q-item-section>
+              <q-item-section>Order</q-item-section>
             </q-item>
 
             <q-item
@@ -128,38 +127,13 @@ const NavBar = {
               <q-item-section avatar>
                 <q-icon name="info" />
               </q-item-section>
-              <q-item-section>{{ $t('app.about') }}</q-item-section>
-            </q-item>
+              <q-item-section>About</q-item-section>
+            </q-item> 
           </q-list>
         </q-scroll-area>
       </q-drawer>
 
-      <!-- Language Selection Dialog -->
-      <q-dialog v-model="languageDialogOpen" position="bottom">
-        <q-card style="min-width: 300px;">
-          <q-card-section>
-            <div class="text-h6">{{ $t('navbar.language') }}</div>
-          </q-card-section>
-          <q-card-section class="q-pt-none">
-            <q-list>
-              <q-item 
-                v-for="locale in supportedLocales" 
-                :key="locale"
-                clickable 
-                @click="changeLanguage(locale)"
-                :class="{ 'text-primary': currentLocale === locale }"
-              >
-                <q-item-section>
-                  <q-item-label>{{ getLanguageName(locale) }}</q-item-label>
-                </q-item-section>
-                <q-item-section side v-if="currentLocale === locale">
-                  <q-icon name="check" color="primary" />
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-card-section>
-        </q-card>
-      </q-dialog>
+
     </header>
   `,
   data() {
@@ -167,17 +141,11 @@ const NavBar = {
       currentTab: 'home',
       mobileMenuOpen: false,
       windowWidth: window.innerWidth,
-      languageDialogOpen: false
+      dark: false
+
     };
   },
-  computed: {
-    currentLocale() {
-      return this.$i18n.locale;
-    },
-    supportedLocales() {
-      return ['en', 'fr', 'ar'];
-    }
-  },
+
   watch: {
     '$route'(to) {
       this.currentTab = to.name || 'home';
@@ -187,6 +155,22 @@ const NavBar = {
   created() {
     this.currentTab = this.$route?.name || 'home';
     window.addEventListener('resize', this.handleResize);
+
+    // Initialize theme pref from localStorage or Quasar
+    const storedDark = localStorage.getItem('dark');
+    if (storedDark !== null) {
+      const val = storedDark === '1';
+      if (this.$q && this.$q.dark && this.$q.dark.set) {
+        this.$q.dark.set(val);
+      }
+      // Keep a page-level class in sync (works regardless of Quasar availability)
+      document.documentElement.classList.toggle('dark', val);
+      this.dark = val;
+    } else if (this.$q && this.$q.dark && typeof this.$q.dark.isActive !== 'undefined') {
+      this.dark = !!this.$q.dark.isActive;
+      // Keep page-level class in sync
+      document.documentElement.classList.toggle('dark', this.dark);
+    }
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize);
@@ -204,26 +188,17 @@ const NavBar = {
         this.closeMobileMenu();
       }
     },
-    showLanguageDialog() {
-      this.languageDialogOpen = true;
-    },
-    changeLanguage(locale) {
-      this.$i18n.locale = locale;
-      localStorage.setItem('user-locale', locale);
-      this.languageDialogOpen = false;
-      
-      // Apply RTL/LTR direction
-      document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
-      document.documentElement.lang = locale;
-    },
-    getLanguageName(locale) {
-      const names = {
-        en: 'English',
-        fr: 'Français',
-        ar: 'العربية'
-      };
-      return names[locale] || locale;
+    toggleDarkMode() {
+      const newVal = !this.dark;
+      if (this.$q && this.$q.dark && this.$q.dark.set) {
+        this.$q.dark.set(newVal);
+      }
+      // Always also keep a page-level class in sync so plain CSS matches
+      document.documentElement.classList.toggle('dark', newVal);
+      this.dark = newVal;
+      localStorage.setItem('dark', newVal ? '1' : '0');
     }
+
   }
 };
 

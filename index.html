@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mon Application Quasar</title>
-  <meta name="description" content="Application avec Quasar">
+  <title>crochetyou.can.do</title>
+  <meta name="description" content="crochetyou.can.do — handmade products and orders">
   <meta name="theme-color" content="#2E7D32">
   <link rel="manifest" href="/manifest.json">
   <!-- Apple / iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Quazar">
-  <link rel="apple-touch-icon" href="https://via.placeholder.com/192/2E7D32/FFFFFF.png?text=Q">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="crochetyou.can.do">
+  <link rel="apple-touch-icon" href="/img/icon-192.png">
+  <meta name="msapplication-TileImage" content="/img/icon-192.png">
+  <meta name="msapplication-TileColor" content="#2E7D32">
   
   <!-- Google Fonts - Robotof -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -57,33 +59,188 @@
       background-color: #6a5845a1;
     }
     
-    /* Product Cards - Smaller Size */
+/* Product Cards - Updated */
     .product-card {
-      background: white;
-      border-radius: 8px;
+      background: var(--card-bg, white);
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
       height: 100%;
-    }
-    
-    .product-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    
-    .product-image {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      display: block;
-    }
-    
-    .product-info {
-      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .product-card:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+      outline: 3px solid rgba(102,187,106,0.18);
+      outline-offset: 2px;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      background: #f3f4f6;
+    }
+
+    .product-info {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1 1 auto;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .product-price {
+      font-size: 16px;
+      font-weight: 800;
+      color: #d97706;
+    }
+
+    .product-name { font-size: 15px; font-weight: 700; line-height: 1.25; }
+
+    .product-description { font-size: 12px; color: #6b7280; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    .product-badge {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      z-index: 8;
+      font-size: 10px !important;
+      padding: 4px 8px !important;
+      border-radius: 999px !important;
+    }
+
+    .product-meta { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+    .stars { color: #fbbf24; font-size: 12px; }
+    .rating-count { font-size: 11px; color: #6b7280; }
+
+    /* Theme aware (robust overrides for cards) */
+    /* Target page-level `.dark` and Quasar card-level dark classes with high specificity */
+    html.dark .product-card,
+    .dark .product-card,
+    .q-card.product-card.q-card--dark,
+    .product-card.q-card--dark,
+    .q-card.product-card.q-dark,
+    .product-card.q-dark {
+      background: #000 !important;
+      color: #ffffff !important;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.6) !important;
+      background-image: none !important;
+    }
+
+    html.dark .product-info,
+    .dark .product-card .product-info,
+    .product-card.q-card--dark .product-info,
+    .product-card.q-dark .product-info { color: #ffffff !important; }
+
+    html.dark .product-description,
+    .dark .product-card .product-description,
+    .product-card.q-card--dark .product-description,
+    .product-card.q-dark .product-description { color: #ffffff !important; }
+
+    html.dark .product-price,
+    .dark .product-card .product-price,
+    .product-card.q-card--dark .product-price,
+    .product-card.q-dark .product-price { color: #f59e0b !important; }
+
+    html.dark .product-badge,
+    .dark .product-card .product-badge,
+    .product-card.q-card--dark .product-badge,
+    .product-card.q-dark .product-badge {
+      background: rgba(255,255,255,0.06) !important;
+      color: #e6ffed !important;
+      border: 1px solid rgba(255,255,255,0.04) !important;
+    }
+
+    html.dark .product-image,
+    .dark .product-card .product-image,
+    .product-card.q-card--dark .product-image,
+    .product-card.q-dark .product-image { background: rgba(255,255,255,0.02) !important; box-shadow: none !important; }
+
+    /* EXTRA: catch-all dark-mode rules to prevent white card surfaces */
+    html.dark .q-card.product-card,
+    html.dark .product-card,
+    .dark .q-card.product-card,
+    .q-card.product-card.q-card--dark,
+    .product-card.q-card--dark,
+    .q-card.product-card.q-dark,
+    .product-card.q-dark {
+      background: #000 !important;
+      color: #ffffff !important;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.6) !important;
+      border: 1px solid rgba(255,255,255,0.03) !important;
+    }
+
+    html.dark .q-card .q-card__section,
+    html.dark .q-card-section,
+    .dark .q-card .q-card__section,
+    .dark .q-card-section,
+    .product-card.q-dark .q-card__section,
+    .product-card.q-dark .q-card-section {
+      background: transparent !important;
+      color: #ffffff !important;
+    }
+
+    /* FORCE: make card sections black in dark mode */
+    html.dark .q-card.product-card .q-card__section,
+    html.dark .product-card .q-card__section,
+    html.dark .product-card .product-info,
+    .dark .q-card.product-card .q-card__section,
+    .dark .product-card .q-card__section,
+    .product-card.q-dark .q-card__section,
+    .product-card.q-dark .product-info {
+      background: #000 !important;
+      color: #ffffff !important;
+      border-top-left-radius: 8px !important;
+      border-top-right-radius: 8px !important;
+    }
+
+    html.dark .product-image,
+    .dark .product-image,
+    .product-card.q-dark .product-image { background: transparent !important; }
+
+    html.dark .product-card .card,
+    .dark .product-card .card,
+    html.dark .product-card .card-section,
+    .dark .product-card .card-section {
+      background: transparent !important;
+      color: #ffffff !important;
+    }
+
+    html.dark .product-fav,
+    .dark .product-card .product-fav,
+    .product-card.q-card--dark .product-fav,
+    .product-card.q-dark .product-fav { background: rgba(255,255,255,0.04) !important; }
+
+    html.dark .stars,
+    .dark .product-card .stars,
+    .product-card.q-card--dark .stars,
+    .product-card.q-dark .stars { color: #fbbf24 !important; }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .product-image { height: 160px; }
+      .product-name { font-size: 14px; }
+      .product-description { font-size: 11px; -webkit-line-clamp: 3; }
     }
     
     .product-name {
@@ -253,6 +410,27 @@
       font-size: 10px !important;
       padding: 2px 6px !important;
     }
+
+    /* Dialog theme styles */
+    .dialog-light .dialog-header { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+    .dialog-dark .dialog-header { background: #000; }
+
+    .dialog-dark .dialog-title { color: #e5e7eb !important; }
+    .dialog-dark .dialog-desc { color: #d1d5db !important; }
+    .dialog-light .dialog-desc { color: #4b5563 !important; }
+
+    .dialog-dark .order-form { background: #0f1720 !important; color: #e5e7eb !important; }
+    .dialog-light .order-form { background: #f9fafb !important; color: #374151 !important; }
+
+    .dialog-dark .q-field__label { color: rgba(229,231,235,0.95) !important; font-weight: 500; }
+    .dialog-dark .q-field__control { color: #f3f4f6 !important; }
+    .dialog-dark .q-input__control .q-placeholder { color: rgba(229,231,235,0.6) !important; }
+    .dialog-dark .q-field__messages { color: #fca311 !important; }
+    .dialog-light .q-field__messages { color: #b45309 !important; }
+
+    .dialog-light .q-field__label { color: rgba(17,24,39,0.9) !important; font-weight: 500; }
+    .dialog-light .q-field__control { color: #1f2937 !important; }
+
   </style>
 </head>
 <body>
@@ -275,8 +453,7 @@
   <script src="https://cdn.jsdelivr.net/npm/quasar@2.12.0/dist/lang/en-US.umd.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/quasar@2.12.0/dist/lang/ar.umd.prod.js"></script>
 
-  <!-- Vue I18n -->
-  <script src="https://cdn.jsdelivr.net/npm/vue-i18n@9.8.0/dist/vue-i18n.global.prod.js"></script>
+
   
   <!-- Application Script -->
   <script type="module" src="main.js"></script>
@@ -303,7 +480,7 @@
       if (document.getElementById(id)) return;
       const btn = document.createElement('button');
       btn.id = id;
-      btn.textContent = 'Installer l\u2019app';
+      btn.textContent = 'Install app';
       Object.assign(btn.style, {
         position: 'fixed',
         right: '16px',
@@ -346,11 +523,7 @@
       if (document.getElementById('ios-install-banner')) return;
       const banner = document.createElement('div');
       banner.id = 'ios-install-banner';
-      banner.innerHTML = '<div style="padding:12px 16px;color:#fff;background:#2E7D32;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.14);display:flex;gap:12px;align-items:center;max-width:320px;">
-        <span style="font-weight:600">Ajouter à l\'écran d\'accueil</span>
-        <span style="font-size:13px;opacity:0.95">Appuyez sur <strong>Partager</strong> puis <strong>Ajouter à l\'écran d\'accueil</strong></span>
-        <button id="ios-install-close" style="margin-left:auto;background:transparent;border:none;color:#fff;font-size:16px;cursor:pointer">✕</button>
-      </div>';
+      banner.innerHTML = '<div style="padding:12px 16px;color:#fff;background:#2E7D32;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.14);display:flex;gap:12px;align-items:center;max-width:360px;">\n        <span style="font-weight:600">Add to Home Screen</span>\n        <span style="font-size:13px;opacity:0.95">Tap <strong>Share</strong> then <strong>Add to Home Screen</strong></span>\n        <button id="ios-install-close" style="margin-left:auto;background:transparent;border:none;color:#fff;font-size:16px;cursor:pointer">✕</button>\n      </div>';
       Object.assign(banner.style, {
         position: 'fixed',
         left: '16px',
@@ -368,7 +541,7 @@
       if (document.getElementById('pwa-install-hint')) return;
       const hint = document.createElement('div');
       hint.id = 'pwa-install-hint';
-      hint.textContent = "Pour installer : ouvrez le site en HTTPS (ou localhost) avec Chrome, puis utilisez la boîte de dialogue d'installation.";
+      hint.textContent = "To install: open the site over HTTPS (or localhost) in Chrome and use the browser install prompt.";
       Object.assign(hint.style, {
         position: 'fixed',
         left: '16px',

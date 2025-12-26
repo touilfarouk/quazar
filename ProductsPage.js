@@ -9,22 +9,22 @@ const ProductsPage = {
     <q-page padding class="products-page">
       <div class="q-pa-md">
         <div class="products-hero text-center q-mb-lg hero-bg">
-          <q-img src="img/brouwn.png" ratio="16/6" class="hero-image">
+          <q-img src="img/hat-slouchy.png" ratio="16/6" class="hero-image">
             <div class="hero-inner">
               <h2 class="text-h4 text-weight-bold" style="color: white; text-shadow: 0 2px 6px rgba(0,0,0,0.6)">Cozy for a cause</h2>
               <p class="text-subtitle1" style="color: rgba(255,255,255,0.95); text-shadow: 0 1px 4px rgba(0,0,0,0.5)">Crocheted hats and accessories — handmade. Available December to January. Fundraiser by Glen Forest.</p>
               <div class="q-mt-md">
-                <q-btn color="white" text-color="primary" label="Voir les produits" @click="$router.push('/products')" class="btn-primary-hero" />
+                <q-btn color="white" text-color="primary" label="See products" @click="$router.push('/products')" class="btn-primary-hero" />
               </div>
             </div>
           </q-img>
         </div>
 
         <div class="products-grid">
-          <q-card v-for="p in products" :key="p.id" class="product-card">
+          <q-card v-for="p in products" :key="p.id" :class="['product-card', { 'q-card--dark': ($q && $q.dark && $q.dark.isActive), 'q-dark': ($q && $q.dark && $q.dark.isActive) }]" tabindex="0" role="button" :aria-label="'Open details for ' + p.name" @click="openDetails(p)" @keydown.enter.prevent="openDetails(p)" @keydown.space.prevent="openDetails(p)">
             <div v-if="p.badge" class="product-badge">{{ p.badge }}</div>
-            <q-btn round dense flat icon="favorite_border" class="product-fav" @click.stop="toggleFavorite(p)" :class="{ 'text-negative': isFavorite(p) }" />
-            <q-img :src="p.img" :alt="p.name" class="product-image" ratio="16/10" style="padding: 5px;" />
+            <q-btn round dense flat icon="favorite_border" class="product-fav" @click.stop="toggleFavorite(p)" :class="{ 'text-negative': isFavorite(p) }" :aria-pressed="isFavorite(p)" />
+            <q-img lazy :src="p.img" :alt="p.name" class="product-image" ratio="16/10" />
             <q-card-section class="product-info">
               <div>
                 <div class="product-name">{{ p.name }}</div>
@@ -40,8 +40,8 @@ const ProductsPage = {
               <div class="row items-center q-mt-sm justify-between">
                 <div class="product-price">{{ formatPrice(p.price) }}</div>
                 <div style="min-width: 140px;">
-                  <q-btn dense flat color="primary" label="Voir" @click="openDetails(p)" />
-                  <q-btn dense color="primary" label="Commander" @click="openDetails(p)" class="btn-add-cart q-ml-sm" />
+                  <q-btn dense flat color="primary" label="View" @click.stop="openDetails(p)" />
+                  <q-btn dense color="primary" label="Order" @click.stop="openDetails(p)" class="btn-add-cart q-ml-sm" />
                 </div>
               </div>
             </q-card-section>

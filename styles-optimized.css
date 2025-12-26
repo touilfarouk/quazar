@@ -17,6 +17,7 @@
   --text-secondary: #6b7280;
   --background: #f5f5f5;
   --white: #ffffff;
+  --card-bg: var(--white);
   --border-color: #e0e0e0;
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
@@ -26,6 +27,8 @@
   --border-radius: 8px;
   --border-radius-lg: 12px;
 }
+
+html.dark, .dark { --card-bg: #000; }
 
 html {
   scroll-behavior: smooth;
@@ -57,7 +60,7 @@ body {
 
 /* Card Component with CSS variables */
 .card {
-  background: var(--white);
+  background: var(--card-bg, var(--white));
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-sm);
   width: 100%;
@@ -258,7 +261,7 @@ textarea.q-field__native,
 /* Product Card - Optimized */
 .product-card {
   background: var(--white);
-  border-radius: var(--border-radius);
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -267,11 +270,19 @@ textarea.q-field__native,
   height: 100%;
   position: relative;
   will-change: transform;
+  cursor: pointer;
+  outline: none;
+}
+.product-card:focus {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  outline: 3px solid rgba(102,187,106,0.18);
+  outline-offset: 2px;
 }
 
 .product-card:hover {
   transform: translateY(-8px) scale(1.01);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-xl);
 }
 
 /* Badge and favorite */
@@ -279,13 +290,13 @@ textarea.q-field__native,
   position: absolute;
   left: 12px;
   top: 12px;
+  z-index: 8;
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 999px;
   background: rgba(217,119,6,0.95);
   color: var(--white);
-  padding: 6px 10px;
-  border-radius: 999px;
   font-weight: 700;
-  font-size: 0.8rem;
-  z-index: 6;
   box-shadow: var(--shadow-md);
   backdrop-filter: blur(4px);
 }
@@ -294,56 +305,129 @@ textarea.q-field__native,
   position: absolute;
   right: 10px;
   top: 10px;
-  z-index: 6;
+  z-index: 8;
   background: rgba(255,255,255,0.95);
   border-radius: 50%;
   transition: transform var(--transition-fast);
 }
 
-.product-fav:hover {
-  transform: scale(1.1);
-}
+.product-fav:hover { transform: scale(1.06); }
 
 .product-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-top: 6px;
 }
 
-.product-meta .stars {
-  color: #ffd166;
-  font-size: 0.95rem;
-}
-
-.product-meta .rating-count {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
+.product-meta .stars { color: #fbbf24; font-size: 12px; }
+.product-meta .rating-count { color: var(--text-secondary); font-size: 11px; }
 
 /* Product Image - Optimized */
 .product-image {
   width: 100%;
-  height: 250px;
+  height: 180px;
   object-fit: cover;
   display: block;
-  padding: 8px;
-  border-radius: var(--border-radius);
-  background: var(--white);
-  box-shadow: var(--shadow-sm);
+  background: var(--surface);
   transition: transform var(--transition-fast);
 }
 
+/* Strong page-level dark overrides for optimized stylesheet */
+html.dark .product-card,
+.dark .product-card { background: #000 !important; color: #ffffff !important; box-shadow: 0 6px 22px rgba(0,0,0,0.6) !important; }
+html.dark .product-card .product-info,
+.dark .product-card .product-info { color: #ffffff !important; }
+html.dark .product-card .product-description,
+.dark .product-card .product-description { color: #ffffff !important; }
+html.dark .product-card .product-price,
+.dark .product-card .product-price { color: #f59e0b !important; }
+html.dark .product-card .product-badge,
+.dark .product-card .product-badge { background: rgba(255,255,255,0.06) !important; color: #e6ffed !important; border: 1px solid rgba(255,255,255,0.04) !important; }
+html.dark .product-card .product-image,
+.dark .product-card .product-image { background: rgba(255,255,255,0.02) !important; box-shadow: none !important; }
+html.dark .product-card .product-fav,
+.dark .product-card .product-fav { background: rgba(255,255,255,0.04) !important; }
+html.dark .product-card .stars,
+.dark .product-card .stars { color: #fbbf24 !important; }
+html.dark .product-card:focus,
+.dark .product-card:focus { outline: 3px solid rgba(102,187,106,0.22) !important; outline-offset: 2px !important; }
+
+/* FORCE dark sections for cards */
+html.dark .q-card.product-card .q-card__section,
+html.dark .product-card .q-card__section,
+html.dark .product-card .product-info,
+.dark .q-card.product-card .q-card__section,
+.dark .product-card .q-card__section,
+.product-card.q-dark .q-card__section,
+.product-card.q-dark .product-info {
+  background: #000 !important;
+  color: #ffffff !important;
+}
+
+html.dark .product-image,
+.dark .product-image,
+.product-card.q-dark .product-image { background: transparent !important; } 
 .product-image img,
 .product-image .q-img__image {
-  border-radius: 5px;
+  border-radius: 6px;
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
   object-position: 50% 50%;
-  padding: 0;
 }
+
+/* Theme-aware card styling: support both page-level .dark and Quasar's q-card--dark/q-dark on the card */
+.q-card.product-card.q-card--dark,
+.product-card.q-card--dark,
+.q-card.product-card.q-dark,
+.product-card.q-dark {
+  background: #000 !important;
+  color: #e5e7eb !important;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.6) !important;
+  background-image: none !important;
+}
+.product-card.q-card--dark .product-info,
+.product-card.q-dark .product-info {
+  color: #ffffff !important;
+}
+.product-card.q-card--dark .product-description,
+.product-card.q-dark .product-description {
+  color: #ffffff !important;
+}
+.product-card.q-card--dark .product-price,
+.product-card.q-dark .product-price {
+  color: #f59e0b !important;
+}
+.product-card.q-card--dark .product-badge,
+.product-card.q-dark .product-badge {
+  background: rgba(255,255,255,0.06) !important;
+  color: #e6ffed !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+}
+.product-card.q-card--dark .product-image,
+.product-card.q-dark .product-image { background: rgba(255,255,255,0.02) !important; box-shadow: none !important; }
+.product-card.q-card--dark .product-fav,
+.product-card.q-dark .product-fav {
+  background: rgba(255,255,255,0.04) !important;
+}
+.product-card.q-card--dark .stars,
+.product-card.q-dark .stars { color: #fbbf24 !important; }
+
+/* focus tweak for dark cards */
+.product-card.q-card--dark:focus,
+.product-card.q-dark:focus { outline: 3px solid rgba(102,187,106,0.22) !important; outline-offset: 2px !important; }
+
+/* Ensure title and meta text are readable inside dark cards */
+.product-card.q-card--dark .product-name,
+.product-card.q-dark .product-name,
+.dark .product-name { color: #ffffff !important; }
+
+.product-card.q-card--dark .rating-count,
+.product-card.q-dark .rating-count,
+.dark .rating-count { color: #ffffff !important; }
+
 
 /* Product Info */
 .product-info {

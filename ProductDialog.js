@@ -2,7 +2,7 @@
 const ProductDialog = {
   template: `
     <q-dialog v-model="dialogOpen" persistent transition-show="scale" transition-hide="scale">
-      <q-card style="min-width: 380px; max-width: 650px; border-radius: 12px;">
+      <q-card :class="dialogThemeClass" style="min-width: 380px; max-width: 650px; border-radius: 12px;">
         <!-- Close button -->
         <q-btn
           flat
@@ -16,7 +16,7 @@ const ProductDialog = {
         />
 
         <!-- Product Image Section -->
-        <q-card-section class="q-pa-md" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+        <q-card-section class="q-pa-md dialog-header">
           <div class="row justify-center">
             <q-img 
               :src="selectedProduct?.img" 
@@ -31,7 +31,7 @@ const ProductDialog = {
 
         <!-- Product Info Section -->
         <q-card-section class="q-pa-lg">
-          <div class="text-h5 text-weight-bold q-mb-xs" style="color: #1a202c;">
+          <div class="text-h5 text-weight-bold q-mb-xs dialog-title">
             {{ selectedProduct?.name }}
           </div>
           
@@ -39,7 +39,7 @@ const ProductDialog = {
             <q-badge color="primary" :label="selectedProduct.badge" />
           </div>
 
-          <div class="text-body2 text-grey-7 q-mb-md" style="line-height: 1.6;">
+          <div class="text-body2 q-mb-md dialog-desc" style="line-height: 1.6;">
             {{ selectedProduct?.description }}
           </div>
 
@@ -62,9 +62,9 @@ const ProductDialog = {
           </div>
 
           <!-- Order Form -->
-          <div class="q-pa-md" style="background: #f9fafb; border-radius: 8px;">
-            <div class="text-subtitle1 text-weight-medium q-mb-md" style="color: #374151;">
-              Order Information
+          <div :style="formStyle" class="q-pa-md order-form">
+            <div class="text-subtitle1 text-weight-medium q-mb-md dialog-form-title">
+              Order Details
             </div>
 
             <form @submit.prevent="submitOrder" class="order-form">
@@ -72,9 +72,8 @@ const ProductDialog = {
                 <q-input 
                   outlined 
                   v-model="order.parentName" 
-                  label="Parent Name *" 
+                  label="Parent / Guardian Name *" 
                   dense
-                  required
                   :rules="[val => !!val || 'Required field']"
                   aria-required="true"
                 >
@@ -88,9 +87,8 @@ const ProductDialog = {
                   v-model="order.contact" 
                   label="Email or Phone *" 
                   dense
-                  required
-                  type="email"
-                  :rules="[val => !!val || 'Required field', val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || 'Please enter a valid email']"
+                  type="text"
+                  :rules="[val => !!val || 'Required field', contactRule]"
                   aria-required="true"
                 >
                   <template v-slot:prepend>
@@ -101,9 +99,8 @@ const ProductDialog = {
                 <q-input 
                   outlined 
                   v-model="order.studentName" 
-                  label="Student's Name *" 
+                  label="Recipient Name *" 
                   dense
-                  required
                   :rules="[val => !!val || 'Required field']"
                   aria-required="true"
                 >
@@ -154,7 +151,7 @@ const ProductDialog = {
           />
           <q-btn 
             unelevated
-            label="Send Order" 
+            label="Place Order" 
             color="primary" 
             @click="submitOrder"
             class="q-px-lg"
@@ -199,6 +196,18 @@ const ProductDialog = {
     },
     selectedProduct() {
       return this.product;
+    },
+    isDark() {
+      return !!(this.$q && this.$q.dark && this.$q.dark.isActive) || document.documentElement.classList.contains('dark');
+    },
+    dialogThemeClass() {
+      return this.isDark ? 'dialog-dark' : 'dialog-light';
+    },
+    headerStyle() {
+      return this.isDark ? { background: 'linear-gradient(135deg, #111827 0%, #1f2937 100%)' } : { background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' };
+    },
+    formStyle() {
+      return this.isDark ? { background: '#0f1720', borderRadius: '8px', color: '#e5e7eb' } : { background: '#f9fafb', borderRadius: '8px', color: '#374151' };
     }
   },
   watch: {
@@ -229,6 +238,18 @@ const ProductDialog = {
       this.dialogOpen = false;
       this.resetOrder();
     },
+    // Validation helper used by the template rules (keeps regex out of the template string)
+    contactRule(val) {
+      if (!val) return true;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^\+?[0-9\s\-()]{7,}$/;
+
+      if (val.includes('@')) {
+        return emailRegex.test(val) || 'Please enter a valid email address';
+      }
+
+      return phoneRegex.test(val) || 'Please enter a valid phone number';
+    },
     validateOrder() {
       if (!this.order.parentName || !this.order.contact || !this.order.studentName) {
         this.$q.notify({
@@ -239,19 +260,23 @@ const ProductDialog = {
         });
         return false;
       }
-      
-      // Email validation
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(this.order.contact)) {
-        this.$q.notify({
-          color: 'negative',
-          message: 'Please enter a valid email address',
-          icon: 'error',
-          position: 'top'
-        });
-        return false;
+      const phoneRegex = /^\+?[0-9\s\-()]{7,}$/;
+      const contact = (this.order.contact || '').trim();
+
+      if (contact.includes('@')) {
+        if (!emailRegex.test(contact)) {
+          this.$q.notify({ color: 'negative', message: 'Please enter a valid email address', icon: 'error', position: 'top' });
+          return false;
+        }
+      } else {
+        if (!phoneRegex.test(contact)) {
+          this.$q.notify({ color: 'negative', message: 'Please enter a valid phone number', icon: 'error', position: 'top' });
+          return false;
+        }
       }
-      
+
       return true;
     },
     async submitOrder() {

@@ -1,8 +1,8 @@
 {
-  "name": "Mon Application Quasar",
-  "short_name": "Quazar",
-  "description": "Application Quasar - boutique et commandes",
-  "lang": "fr",
+  "name": "crochetyou.can.do",
+  "short_name": "crochetyou",
+  "description": "crochetyou.can.do — handmade products and orders",
+  "lang": "en",
   "start_url": ".",
   "scope": "/",
   "display": "standalone",
@@ -11,13 +11,13 @@
   "theme_color": "#2E7D32",
   "icons": [
     {
-      "src": "https://via.placeholder.com/192/2E7D32/FFFFFF.png?text=Q",
+      "src": "img/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://via.placeholder.com/512/2E7D32/FFFFFF.png?text=Q",
+      "src": "img/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -37,16 +37,16 @@
   ],
   "shortcuts": [
     {
-      "name": "Produits",
-      "short_name": "Produits",
+      "name": "Products",
+      "short_name": "Products",
       "url": "/#/products",
-      "description": "Voir la liste des produits"
+      "description": "See the products list"
     },
     {
-      "name": "Commander",
-      "short_name": "Commander",
+      "name": "Order",
+      "short_name": "Order",
       "url": "/#/order",
-      "description": "Aller à la page de commande"
+      "description": "Go to the order page"
     }
   ],
   "categories": ["shopping"]
