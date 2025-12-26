@@ -467,6 +467,30 @@ body {
   .dialog-product-img { padding: 8px; max-width: 120px; }
   .q-dialog .q-img { height: 140px; }
   .hero-image .hero-inner { padding: 18px; }
+
+  /* Dialog full width on small screens */
+  .q-dialog .q-card { width: calc(100vw - 24px) !important; max-width: 560px !important; }
+
+  /* Bigger touch targets for buttons */
+  .q-btn, .btn, .btn-add-cart { min-height: 44px !important; padding: 10px 14px !important; font-size: 14px !important; }
+
+  /* Slightly smaller product names and tighter product info */
+  .product-name { font-size: 1.05rem !important; }
+  .product-price { font-size: 15px !important; padding: 4px !important; }
+  .product-info { padding: 12px !important; }
+
+  /* Navbar/header spacing for mobile */
+  .q-header, .q-toolbar { padding: 6px 8px !important; }
+}
+
+/* Extra small screens: single column products */
+@media (max-width: 420px) {
+  .products-grid, .product-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .product-image { height: 120px !important; }
+  .page-inner { padding: 8px !important; }
+  .hero-image .hero-inner { padding: 12px !important; }
+  .text-h6 { font-size: 1.05rem !important; padding: 4px !important; }
+  .text-caption { font-size: 0.7rem !important; padding: 4px !important; }
 }
 
 /* Order form */
