@@ -78,6 +78,27 @@ body {
   border-color: #2E7D32;
 }
 
+/* Styled Quasar native inputs (show subtle border / padding) */
+.q-field__native,
+textarea.q-field__native,
+.q-field__control .q-field__native {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 10px;
+  background: #fff;
+  outline: none;
+  transition: box-shadow 0.12s, border-color 0.12s;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.q-field__native:focus,
+.q-field--focused .q-field__native {
+  border-color: #2E7D32;
+  box-shadow: 0 0 0 3px rgba(46,125,50,0.06);
+}
+
 .textarea {
   resize: vertical;
   min-height: 100px;
@@ -481,6 +502,10 @@ body {
 
   /* Navbar/header spacing for mobile */
   .q-header, .q-toolbar { padding: 6px 8px !important; }
+
+  /* Make order action buttons stack on mobile */
+  .order-actions-row { flex-direction: column-reverse; gap: 8px; }
+  .order-actions-row .q-btn { width: 100%; }
 }
 
 /* Extra small screens: single column products */
