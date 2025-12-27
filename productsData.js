@@ -45,22 +45,6 @@ const products = [
   },
   {
     id: 6,
-    name: 'Phone Holder / Bolsa para teléfono',
-    price: 17,
-    img: 'img/phone-holder.png',
-    description: 'Handmade phone pouch — practical and stylish.',
-    rating: 4.1
-  },
-  {
-    id: 7,
-    name: 'Hair Tie / Liga para el pelo',
-    price: 10,
-    img: 'img/hair-tie.png',
-    description: 'Set of crochet hair ties — soft and durable.',
-    rating: 4.0
-  },
-  {
-    id: 8,
     name: 'Premium Leather Boots',
     price: 120,
     img: 'img/boots-premium.png',
@@ -69,7 +53,7 @@ const products = [
     rating: 4.8
   },
   {
-    id: 9,
+    id: 7,
     name: 'Classic Oxford Shoes',
     price: 150,
     img: 'img/oxford-classic.png',
@@ -78,7 +62,7 @@ const products = [
     rating: 4.7
   },
   {
-    id: 10,
+    id: 8,
     name: 'Comfort Moccasins',
     price: 95,
     img: 'img/mocassins-comfort.png',
@@ -87,16 +71,7 @@ const products = [
     rating: 4.5
   },
   {
-    id: 11,
-    name: 'Leather Sneakers',
-    price: 110,
-    img: 'img/sneakers-leather.jpg',
-    description: 'Modern leather sneakers with a comfortable sole for a casual look.',
-    badge: 'Trending',
-    rating: 4.6
-  },
-  {
-    id: 12,
+    id: 9,
     name: 'Elegant Oxfords',
     price: 135,
     img: 'img/richelieus-elegants.png',
@@ -105,7 +80,7 @@ const products = [
     rating: 4.9
   },
   {
-    id: 13,
+    id: 10,
     name: 'Leather Sandals',
     price: 75,
     img: 'img/sandals-leather.png',
@@ -114,7 +89,7 @@ const products = [
     rating: 4.3
   },
   {
-    id: 14,
+    id: 11,
     name: 'City Shoes',
     price: 125,
     img: 'img/shoes-city.png',
