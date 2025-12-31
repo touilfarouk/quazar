@@ -17,7 +17,7 @@ if($num > 0) {
     $products_arr = array();
     $products_arr["records"] = array();
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
         $product_item = array(
             "id" => $id,
@@ -25,6 +25,7 @@ if($num > 0) {
             "description" => html_entity_decode($description),
             "price" => $price,
             "category_id" => $category_id,
+            "image" => isset($image) ? $image : null,
             "created" => $created
         );
         array_push($products_arr["records"], $product_item);
