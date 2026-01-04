@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Slouchy Hat / Gorro",
+    "description": "Hand-crocheted slouchy hat — cozy and warm, perfect for winter.",
+    "price": 20,
+    "image": "img/hat-slouchy.png",
+    "category": "Clothing"
+  },
+  {
+    "id": 2,
+    "name": "Beanie Hat / Gorro",
+    "description": "Classic beanie, soft and versatile for everyday wear.",
+    "price": 22,
+    "image": "img/hat-beanie.png",
+    "category": "Clothing"
+  },
+  {
+    "id": 3,
+    "name": "test",
+    "description": "test",
+    "price": 454,
+    "image": "img/hat-slouchy.png",
+    "category": "Clothing"
+  }
+]

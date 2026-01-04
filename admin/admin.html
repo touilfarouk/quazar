@@ -159,8 +159,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Base URL for API
-const API_BASE_URL = 'http://localhost/quazar/api';
-
+const API_BASE_URL = 'http://localhost:5000';
 
         // DOM Elements
         const productsTableBody = document.getElementById('productsTableBody');
@@ -206,35 +205,22 @@ const API_BASE_URL = 'http://localhost/quazar/api';
 
 async function loadProducts() {
     try {
-   const response = await fetch('http://localhost/quazar/api/products/read.php', {
-    method: 'GET',
-    redirect: 'manual', // Prevent automatic redirect
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
-});
-
-if (response.redirected) {
-    console.warn('Request was redirected to:', response.url);
-    throw new Error('API request was redirected. Check the API URL.');
-}
+        const response = await fetch(`${API_BASE_URL}/products`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const text = await response.text();
-        let data;
-        try {
-            data = JSON.parse(text);
-        } catch (e) {
-            console.error('Failed to parse JSON:', text);
-            throw new Error('Invalid JSON response from server');
-        }
-
-        if (data.records && data.records.length > 0) {
-            renderProducts(data.records);
+        const products = await response.json();
+        
+        if (products.length > 0) {
+            renderProducts(products);
         } else {
             productsTableBody.innerHTML = '<tr><td colspan="6" class="text-center">No products found</td></tr>';
         }
@@ -243,6 +229,7 @@ if (response.redirected) {
         showAlert('Error loading products: ' + error.message, 'danger');
     }
 }
+
         // Render products in the table
         function renderProducts(products) {
             productsTableBody.innerHTML = products.map(product => `
@@ -284,8 +271,9 @@ if (response.redirected) {
             const productData = {
                 name: document.getElementById('productName').value,
                 description: document.getElementById('productDescription').value,
-                price: document.getElementById('productPrice').value,
-                category_id: document.getElementById('productCategory').value
+                price: parseFloat(document.getElementById('productPrice').value),
+                category: document.getElementById('productCategory').options[document.getElementById('productCategory').selectedIndex].text,
+                image: getProductImage(parseInt(document.getElementById('productId').value) || 1)
             };
 
             const productId = document.getElementById('productId').value;
@@ -294,35 +282,28 @@ if (response.redirected) {
             try {
                 if (isEdit) {
                     // Update existing product
-                    const response = await fetch(`${API_BASE_URL}/products/update.php`, {
-                        method: 'POST',
+                    const response = await fetch(`${API_BASE_URL}/products`, {
+                        method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            id: productId,
+                            id: parseInt(productId),
                             ...productData
                         })
                     });
 
-                    const result = await response.json();
-                    
                     if (response.ok) {
-                        // Handle image upload if a new image was selected
-                        const imageInput = document.getElementById('productImage');
-                        if (imageInput.files.length > 0) {
-                            await uploadProductImage(productId, imageInput.files[0]);
-                        }
-                        
                         showAlert('Product updated successfully!', 'success');
                         productModal.hide();
                         loadProducts();
                     } else {
+                        const result = await response.json();
                         throw new Error(result.message || 'Failed to update product');
                     }
                 } else {
                     // Create new product
-                    const response = await fetch(`${API_BASE_URL}/products/create.php`, {
+                    const response = await fetch(`${API_BASE_URL}/products`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -330,27 +311,18 @@ if (response.redirected) {
                         body: JSON.stringify(productData)
                     });
 
-                    const result = await response.json();
-                    
                     if (response.ok) {
-                        const newProductId = result.id;
-                        
-                        // Upload image if one was selected
-                        const imageInput = document.getElementById('productImage');
-                        if (imageInput.files.length > 0) {
-                            await uploadProductImage(newProductId, imageInput.files[0]);
-                        }
-                        
                         showAlert('Product created successfully!', 'success');
                         productModal.hide();
                         loadProducts();
                     } else {
+                        const result = await response.json();
                         throw new Error(result.message || 'Failed to create product');
                     }
                 }
             } catch (error) {
                 console.error('Error saving product:', error);
-                showAlert(error.message || 'An error occurred while saving the product', 'danger');
+                showAlert(error.message || 'An error occurred while saving product', 'danger');
             }
         }
 
@@ -369,44 +341,6 @@ if (response.redirected) {
                 const error = await response.json();
                 throw new Error(error.message || 'Failed to upload image');
             }
-
-            return response.json();
-        }
-
-        // Edit product
-        async function editProduct(id) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/products/read_one.php?id=${id}`);
-                const product = await response.json();
-                
-                if (product) {
-                    document.getElementById('productId').value = product.id;
-                    document.getElementById('productName').value = product.name;
-                    document.getElementById('productDescription').value = product.description;
-                    document.getElementById('productPrice').value = product.price;
-                    document.getElementById('productCategory').value = product.category_id || '1';
-                    
-                    // Show image preview if exists
-                    const preview = document.getElementById('imagePreview');
-                    if (product.image) {
-                        preview.innerHTML = `<img src="${product.image}" class="img-thumbnail" style="max-height: 150px;">`;
-                    } else {
-                        preview.innerHTML = '';
-                    }
-                    
-                    document.getElementById('modalTitle').textContent = 'Edit Product';
-                    productModal.show();
-                }
-            } catch (error) {
-                console.error('Error loading product:', error);
-                showAlert('Error loading product details', 'danger');
-            }
-        }
-
-        // Confirm delete
-        function confirmDelete(id) {
-            currentProductId = id;
-            deleteModal.show();
         }
 
         // Delete product
@@ -414,26 +348,25 @@ if (response.redirected) {
             if (!currentProductId) return;
 
             try {
-                const response = await fetch(`${API_BASE_URL}/products/delete.php`, {
-                    method: 'POST',
+                const response = await fetch(`${API_BASE_URL}/products`, {
+                    method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ id: currentProductId })
+                    body: JSON.stringify({ id: parseInt(currentProductId) })
                 });
 
-                const result = await response.json();
-                
                 if (response.ok) {
                     showAlert('Product deleted successfully!', 'success');
                     deleteModal.hide();
                     loadProducts();
                 } else {
+                    const result = await response.json();
                     throw new Error(result.message || 'Failed to delete product');
                 }
             } catch (error) {
                 console.error('Error deleting product:', error);
-                showAlert(error.message || 'An error occurred while deleting the product', 'danger');
+                showAlert(error.message || 'An error occurred while deleting product', 'danger');
             } finally {
                 currentProductId = null;
             }
@@ -465,6 +398,16 @@ if (response.redirected) {
             }, 5000);
         }
 
+        // Helper function to get category ID by name
+        function getCategoryId(categoryName) {
+            const categories = {
+                'Electronics': 1,
+                'Clothing': 2,
+                'Home & Garden': 3
+            };
+            return categories[categoryName] || 1;
+        }
+
         // Helper function to get category name by ID
         function getCategoryName(categoryId) {
             const categories = {
@@ -473,6 +416,30 @@ if (response.redirected) {
                 3: 'Home & Garden'
             };
             return categories[categoryId] || 'Uncategorized';
+        }
+
+        // Helper function to generate price based on ID
+        function generatePrice(id) {
+            const basePrices = [20, 22, 27, 25, 30, 35, 40, 45, 50, 55];
+            return basePrices[(id - 1) % basePrices.length];
+        }
+
+        // Helper function to get product image based on ID
+        function getProductImage(id) {
+            const images = [
+                'img/hat-slouchy.png',
+                'img/hat-beanie.png', 
+                'img/hat-glen-tag.png',
+                'img/hat-pom.png',
+                'img/hat-plain.png',
+                'img/boots-premium.png',
+                'img/oxford-classic.png',
+                'img/mocassins-comfort.png',
+                'img/richelieus-elegants.png',
+                'img/sandals-leather.png',
+                'img/shoes-city.png'
+            ];
+            return images[(id - 1) % images.length];
         }
     </script>
 </body>
