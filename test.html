@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+  <!--
+    WARNING! Make sure that you match all Quasar related
+    tags to the same version! (Below it's "@2.18.6")
+  -->
+
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@2.18.6/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <!-- example of injection point where you write your app template -->
+    <div id="q-app"></div>
+
+    <!-- Add the following at the end of your body tag -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.18.6/dist/quasar.umd.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.18.6/dist/icon-set/svg-material-icons.umd.prod.js"></script>
+    
+    <script>
+      /*
+        Example kicking off the UI. Obviously, adapt this to your specific needs.
+        Assumes you have a <div id="q-app"></div> in your <body> above
+       */
+      const app = Vue.createApp({
+        setup () {
+          const { ref } = Vue
+          
+          // Form data
+          const formData = ref({
+            name: '',
+            email: '',
+            age: null,
+            gender: '',
+            terms: false,
+            newsletter: true,
+            message: '',
+            rating: 3,
+            date: '',
+            time: '',
+            color: '#1976D2',
+            range: 50,
+            select: '',
+            tags: [],
+            file: null
+          })
+          
+          // Options for select
+          const options = ref([
+            { label: 'Option 1', value: 'opt1' },
+            { label: 'Option 2', value: 'opt2' },
+            { label: 'Option 3', value: 'opt3' }
+          ])
+          
+          const submitForm = () => {
+            console.log('Form submitted:', formData.value)
+            alert('Form submitted successfully! Check console for data.')
+          }
+          
+          const resetForm = () => {
+            formData.value = {
+              name: '',
+              email: '',
+              age: null,
+              gender: '',
+              terms: false,
+              newsletter: true,
+              message: '',
+              rating: 3,
+              date: '',
+              time: '',
+              color: '#1976D2',
+              range: 50,
+              select: '',
+              tags: [],
+              file: null
+            }
+          }
+          
+          return {
+            formData,
+            options,
+            submitForm,
+            resetForm
+          }
+        },
+        template: `
+          <div class="q-pa-md" style="max-width: 600px; margin: 0 auto;">
+            <q-card class="q-pa-lg">
+              <q-card-section>
+                <div class="text-h5 text-weight-bold text-center q-mb-md">
+                  Form Demo
+                </div>
+                <div class="text-grey-7 text-center q-mb-lg">
+                  Comprehensive form with various input types
+                </div>
+              </q-card-section>
+              
+              <q-card-section>
+                <q-form @submit="submitForm" @reset="resetForm" class="q-gutter-md">
+                  <!-- Text Input -->
+                  <q-input
+                    filled
+                    v-model="formData.name"
+                    label="Full Name *"
+                    hint="Enter your full name"
+                    lazy-rules
+                    :rules="[val => val && val.length > 0 || 'Please type something']"
+                  />
+                  
+                  <!-- Email Input -->
+                  <q-input
+                    filled
+                    v-model="formData.email"
+                    label="Email *"
+                    type="email"
+                    hint="Enter your email address"
+                    lazy-rules
+                    :rules="[
+                      val => val && val.length > 0 || 'Please type something',
+                      val => val && val.includes('@') || 'Please enter a valid email'
+                    ]"
+                  />
+                  
+                  <!-- Number Input -->
+                  <q-input
+                    filled
+                    v-model.number="formData.age"
+                    type="number"
+                    label="Age"
+                    hint="Enter your age"
+                    min="1"
+                    max="120"
+                  />
+                  
+                  <!-- Radio Group -->
+                  <q-field
+                    label="Gender"
+                    borderless
+                    stack-label
+                  >
+                    <template v-slot:control>
+                      <div class="q-gutter-sm">
+                        <q-radio v-model="formData.gender" val="male" label="Male" />
+                        <q-radio v-model="formData.gender" val="female" label="Female" />
+                        <q-radio v-model="formData.gender" val="other" label="Other" />
+                      </div>
+                    </template>
+                  </q-field>
+                  
+                  <!-- Checkboxes -->
+                  <div class="q-gutter-sm">
+                    <q-checkbox v-model="formData.terms" label="I accept the terms and conditions" />
+                    <q-checkbox v-model="formData.newsletter" label="Subscribe to newsletter" />
+                  </div>
+                  
+                  <!-- Textarea -->
+                  <q-input
+                    filled
+                    v-model="formData.message"
+                    type="textarea"
+                    label="Message"
+                    hint="Enter your message here"
+                    rows="4"
+                  />
+                  
+                  <!-- Rating -->
+                  <div>
+                    <div class="text-body2 q-mb-sm">Rating</div>
+                    <q-rating
+                      v-model="formData.rating"
+                      size="2em"
+                      icon="star_border"
+                      icon-selected="star"
+                      icon-half="star_half"
+                    />
+                  </div>
+                  
+                  <!-- Date and Time -->
+                  <div class="row q-gutter-md">
+                    <div class="col">
+                      <q-input
+                        filled
+                        v-model="formData.date"
+                        label="Date"
+                        readonly
+                      >
+                        <template v-slot:append>
+                          <q-icon name="event" class="cursor-pointer">
+                            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                              <q-date v-model="formData.date">
+                                <div class="row items-center justify-end">
+                                  <q-btn v-close-popup label="Close" color="primary" flat />
+                                </div>
+                              </q-date>
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </div>
+                    <div class="col">
+                      <q-input
+                        filled
+                        v-model="formData.time"
+                        label="Time"
+                        readonly
+                      >
+                        <template v-slot:append>
+                          <q-icon name="access_time" class="cursor-pointer">
+                            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                              <q-time v-model="formData.time">
+                                <div class="row items-center justify-end">
+                                  <q-btn v-close-popup label="Close" color="primary" flat />
+                                </div>
+                              </q-time>
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </div>
+                  </div>
+                  
+                  <!-- Color Picker -->
+                  <q-input
+                    filled
+                    v-model="formData.color"
+                    label="Favorite Color"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="colorize" class="cursor-pointer">
+                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                          <q-color v-model="formData.color" />
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                  
+                  <!-- Range Slider -->
+                  <div>
+                    <div class="text-body2 q-mb-sm">Range: {{ formData.range }}</div>
+                    <q-slider
+                      v-model="formData.range"
+                      :min="0"
+                      :max="100"
+                      label
+                      color="primary"
+                    />
+                  </div>
+                  
+                  <!-- Select Dropdown -->
+                  <q-select
+                    filled
+                    v-model="formData.select"
+                    :options="options"
+                    label="Select an option"
+                    emit-value
+                    map-options
+                  />
+                  
+                  <!-- Tags -->
+                  <q-select
+                    filled
+                    v-model="formData.tags"
+                    multiple
+                    :options="['JavaScript', 'Vue', 'Quasar', 'CSS', 'HTML', 'Node.js']"
+                    label="Tags"
+                    use-chips
+                  />
+                  
+                  <!-- File Upload -->
+                  <q-file
+                    filled
+                    v-model="formData.file"
+                    label="Upload file"
+                    hint="Choose a file to upload"
+                  />
+                  
+                  <!-- Buttons -->
+                  <div class="q-mt-lg">
+                    <q-btn label="Submit" type="submit" color="primary" class="q-mr-sm" />
+                    <q-btn label="Reset" type="reset" color="secondary" flat class="q-ml-sm" />
+                  </div>
+                </q-form>
+              </q-card-section>
+            </q-card>
+          </div>
+        `
+      })
+
+      app.use(Quasar)
+      Quasar.IconSet.set(Quasar.IconSet.svgMaterialIcons)
+      app.mount('#q-app')
+    </script>
+  </body>
+</html>
